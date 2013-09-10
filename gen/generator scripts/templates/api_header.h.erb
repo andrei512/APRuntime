@@ -1,0 +1,15 @@
+<%= header_for_file "Point2APIClient.h" %>
+
+<% services.each do |service| %>#import "<%= service %>.h"
+<% end %>
+
+// Search criteria
+
+#define kIs @"is"
+#define kLt @"lt"
+#define kLte @"lte"
+#define kGt @"gt"
+#define kGte @"gte"
+#define kRange @"range"
+#define kRegex @"regex"
+

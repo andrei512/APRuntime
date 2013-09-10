@@ -1,0 +1,27 @@
+<%
+=begin
+
+	Request Interface Template
+
+	service_path - the name of the service snake_case
+	service - the name of the service
+	method - camel case version of method name		
+	method_path - api path
+	request_class - request class
+	request_input - request input class
+	request_output - request output class
+	request_documentation
+	
+=end
+%>
+<%= header_for_file "#{request_class}.h" %>
+
+#import "Request.h"
+#import "<%= request_input %>.h"
+#import "<%= request_output %>.h"
+
+@interface <%= request_class %> : Request
+
+@property (nonatomic, strong) <%= request_input %> *input;
+
+@end

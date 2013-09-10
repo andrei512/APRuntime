@@ -1,0 +1,22 @@
+<%
+=begin
+
+APIConfig Interface Template
+
+prefix - class prefix
+
+=end
+
+%>
+<%= header_for_file "#{prefix}APIConfig.h" %>
+
+#import <Foundation/Foundation.h>
+
+@interface <%= "#{prefix}APIConfig" %> : NSObject
+
++ (instancetype)shared;
+
+- (NSString *)apiKey;
+- (NSString *)serverBaseUrl;
+
+@end

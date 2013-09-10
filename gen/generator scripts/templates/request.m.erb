@@ -1,0 +1,34 @@
+<%
+=begin
+
+	Service Implementation Template
+
+	service_path - the name of the service snake_case
+	service - the name of the service CamelCase
+	method - camel case version of method name		
+	method_path - api path
+	request_class - request class
+	request_input - request input class
+	request_output - request output class
+	request_documentation
+	
+=end
+%>
+<%= header_for_file "#{request_class}.h" %>
+
+#import "<%= request_class %>.h"
+
+@implementation <%= request_class %> 
+
++ (instancetype)request {
+    <%= request_class %> *request = [super request];
+    
+	request.serviceName = @"<%= service_path %>";
+	request.methodName = @"<%= method_path %>";
+	request.outputClass = [<%= request_output %> class];
+
+    return request;
+}
+
+@end
+

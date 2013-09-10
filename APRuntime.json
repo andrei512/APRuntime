@@ -1,0 +1,2005 @@
+[
+  {
+    "name": "class_addIvar",
+    "abstract": "Adds a new instance variable to a class. ",
+    "declaration": "BOOL class_addIvar(Class cls, const char *name, size_t size, uint8_t alignment, const char *types)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL class_addIvar(Class cls, const char *name, size_t size, uint8_t alignment, const char *types)\n</pre>\n",
+    "return_value": "Return ValueYES if the instance variable was added successfully, otherwise NO (for example, the class already contains an instance variable with that name).",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if the instance variable was added successfully, otherwise <code>NO</code> (for example, the class already contains an instance variable with that name).</p>\n</div>",
+    "api_discussion": "DiscussionThis function may only be called after objc_allocateClassPair and before objc_registerClassPair. Adding an instance variable to an existing class is not supported.The class must not be a metaclass. Adding an instance variable to a metaclass is not supported.The instance variable's minimum alignment in bytes is 1<<align. The minimum alignment of an instance variable depends on the ivar's type and the machine architecture. For variables of any pointer type, pass log2(sizeof(pointer_type)).",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This function may only be called after <code><a href=\"#//apple_ref/c/func/objc_allocateClassPair\">objc_allocateClassPair</a></code> and before <code><a href=\"#//apple_ref/c/func/objc_registerClassPair\">objc_registerClassPair</a></code>. Adding an instance variable to an existing class is not supported.</p>\n<p>The class must not be a metaclass. Adding an instance variable to a metaclass is not supported.</p>\n<p>The instance variable's minimum alignment in bytes is <code>1&lt;&lt;align</code>. The minimum alignment of an instance variable depends on the ivar's type and the machine architecture. For variables of any pointer type, pass <code>log2(sizeof(pointer_type))</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_addMethod",
+    "abstract": "Adds a new method to a class with a given name and implementation.",
+    "declaration": "BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to which to add a method.nameA selector that specifies the name of the method being added.impA function which is the implementation of the new method. The function must take at least two arguments—self and _cmd.typesAn array of characters that describe the types of the arguments to the method. For possible values, see Objective-C Runtime Programming Guide > “Type Encodings”. Since the function must take at least two arguments—self and _cmd, the second and third characters must be “@:” (the first character is the return type).",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to which to add a method.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>A selector that specifies the name of the method being added.</p></dd>\n<dt><em>imp</em></dt>\n<dd><p>A function which is the implementation of the new method. The function must take at least two arguments—<code>self</code> and <code>_cmd</code>.</p></dd>\n<dt><em>types</em></dt>\n<dd><p>An array of characters that describe the types of the arguments to the method. For possible values, see <em><a href=\"../../../Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008048\" target=\"_self\">Objective-C Runtime Programming Guide</a></em> &gt; <span class=\"content_text\"><a href=\"../../../Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100\" target=\"_self\">“Type Encodings”</a></span>. Since the function must take at least two arguments—<code>self</code> and <code>_cmd</code>, the second and third characters must be “<code>@:</code>” (the first character is the return type).</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to which to add a method.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "A selector that specifies the name of the method being added.",
+        "type": "SEL"
+      },
+      {
+        "name": "imp",
+        "description": "A function which is the implementation of the new method. The function must take at least two arguments—self and _cmd.",
+        "type": "IMP"
+      },
+      {
+        "name": "types",
+        "description": "An array of characters that describe the types of the arguments to the method. For possible values, see Objective-C Runtime Programming Guide > “Type Encodings”. Since the function must take at least two arguments—self and _cmd, the second and third characters must be “@:” (the first character is the return type).",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueYES if the method was added successfully, otherwise NO (for example, the class already contains a method implementation with that name).",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if the method was added successfully, otherwise <code>NO</code> (for example, the class already contains a method implementation with that name).</p>\n</div>",
+    "api_discussion": "Discussionclass_addMethod will add an override of a superclass's implementation, but will not replace an existing implementation in this class. To change an existing implementation, use method_setImplementation.An Objective-C method is simply a C function that take at least two arguments—self and _cmd. For example, given the following function:void myMethodIMP(id self, SEL _cmd){    // implementation ....}you can dynamically add it to a class as a method (called resolveThisMethodDynamically) like this:class_addMethod([self class], @selector(resolveThisMethodDynamically), (IMP) myMethodIMP, \"v@:\");",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code>class_addMethod</code> will add an override of a superclass's implementation, but will not replace an existing implementation in this class. To change an existing implementation, use <code><a href=\"#//apple_ref/c/func/method_setImplementation\">method_setImplementation</a></code>.</p>\n<p>An Objective-C method is simply a C function that take at least two arguments—<code>self</code> and <code>_cmd</code>. For example, given the following function:</p>\n<div class=\"codesample clear\"><table>\n<tr><td scope=\"row\"><pre>void myMethodIMP(id self, SEL _cmd)<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>{<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>    // implementation ....<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>}<span></span></pre></td></tr>\n</table></div>\n<p>you can dynamically add it to a class as a method (called <code>resolveThisMethodDynamically</code>) like this:</p>\n<div class=\"codesample clear\"><table><tr><td scope=\"row\"><pre>class_addMethod([self class], @selector(resolveThisMethodDynamically), (IMP) myMethodIMP, \"v@:\");<span></span></pre></td></tr></table></div>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_addProtocol",
+    "abstract": "Adds a protocol to a class.",
+    "declaration": "BOOL class_addProtocol(Class cls, Protocol *protocol)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL class_addProtocol(Class cls, Protocol *protocol)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to modify.outCountThe protocol to add to cls.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to modify.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>The protocol to add to <em>cls</em>.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to modify.",
+        "type": "Class"
+      },
+      {
+        "name": "outCount",
+        "description": "The protocol to add to cls.",
+        "type": "TYPE"
+      }
+    ],
+    "return_value": "Return ValueYES if the method was added successfully, otherwise NO (for example, the class already conforms to that protocol).",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if the method was added successfully, otherwise <code>NO</code> (for example, the class already conforms to that protocol).</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_conformsToProtocol",
+    "abstract": "Returns a Boolean value that indicates whether a class conforms to a given protocol.",
+    "declaration": "BOOL class_conformsToProtocol(Class cls, Protocol *protocol)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL class_conformsToProtocol(Class cls, Protocol *protocol)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.protocolA protocol.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>protocol</em></dt>\n<dd><p>A protocol.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "protocol",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      }
+    ],
+    "return_value": "Return ValueYES if cls conforms to protocol, otherwise NO.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if <em>cls</em> conforms to <em>protocol</em>, otherwise <code>NO</code>.</p>\n</div>",
+    "api_discussion": "DiscussionYou should usually use NSObject‘s conformsToProtocol: method instead of this function.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You should usually use <code>NSObject</code>‘s <code><a href=\"../../Foundation/Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/conformsToProtocol:\" target=\"_self\">conformsToProtocol:</a></code> method instead of this function.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_copyIvarList",
+    "abstract": "Describes the instance variables declared by a class.",
+    "declaration": "Ivar * class_copyIvarList(Class cls, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nIvar * class_copyIvarList(Class cls, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to inspect.outCountOn return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to inspect.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>On return, contains the length of the returned array. If <em>outCount</em> is <code>NULL</code>, the length is not returned.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "outCount",
+        "description": "On return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueAn array of pointers of type Ivar describing the instance variables declared by the class. Any instance variables declared by superclasses are not included. The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().If the class declares no instance variables, or cls is Nil, NULL is returned and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An array of pointers of type Ivar describing the instance variables declared by the class. Any instance variables declared by superclasses are not included. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the array with <code>free()</code>.</p>\n<p>If the class declares no instance variables, or <code>cls</code> is <code>Nil</code>, <code>NULL</code> is returned and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_copyMethodList",
+    "abstract": "Describes the instance methods implemented by a class.",
+    "declaration": "Method * class_copyMethodList(Class cls, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nMethod * class_copyMethodList(Class cls, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.outCountOn return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>On return, contains the length of the returned array. If <em>outCount</em> is <code>NULL</code>, the length is not returned.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "outCount",
+        "description": "On return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueAn array of pointers of type Method describing the instance methods implemented by the class—any instance methods implemented by superclasses are not included. The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().If cls implements no instance methods, or cls is Nil, returns NULL and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An array of pointers of type <code>Method</code> describing the instance methods implemented by the class—any instance methods implemented by superclasses are not included. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the array with <code>free()</code>.</p>\n<p>If <em>cls</em> implements no instance methods, or <em>cls</em> is <code>Nil</code>, returns <code>NULL</code> and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_discussion": "DiscussionTo get the class methods of a class, use class_copyMethodList(object_getClass(cls), &count).To get the implementations of methods that may be implemented by superclasses, use class_getInstanceMethod or class_getClassMethod.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>To get the class methods of a class, use <code>class_copyMethodList(object_getClass(cls), &amp;count)</code>.</p>\n<p>To get the implementations of methods that may be implemented by superclasses, use <code><a href=\"#//apple_ref/c/func/class_getInstanceMethod\">class_getInstanceMethod</a></code> or <code><a href=\"#//apple_ref/c/func/class_getClassMethod\">class_getClassMethod</a></code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_copyPropertyList",
+    "abstract": "Describes the properties declared by a class.",
+    "declaration": "objc_property_t * class_copyPropertyList(Class cls, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nobjc_property_t * class_copyPropertyList(Class cls, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.outCountOn return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>On return, contains the length of the returned array. If <em>outCount</em> is <code>NULL</code>, the length is not returned.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "outCount",
+        "description": "On return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueAn array of pointers of type objc_property_t describing the properties declared by the class. Any properties declared by superclasses are not included. The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().If cls declares no properties, or cls is Nil, returns NULL and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An array of pointers of type <code>objc_property_t</code> describing the properties declared by the class. Any properties declared by superclasses are not included. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the array with <code>free()</code>.</p>\n<p>If <em>cls</em> declares no properties, or <em>cls</em> is <code>Nil</code>, returns <code>NULL</code> and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_copyProtocolList",
+    "abstract": "Describes the protocols adopted by a class.",
+    "declaration": "Protocol ** class_copyProtocolList(Class cls, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nProtocol ** class_copyProtocolList(Class cls, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.outCountOn return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>On return, contains the length of the returned array. If <em>outCount</em> is <code>NULL</code>, the length is not returned.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "outCount",
+        "description": "On return, contains the length of the returned array. If outCount is NULL, the length is not returned.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueAn array of pointers of type Protocol* describing the protocols adopted by the class. Any protocols adopted by superclasses or other protocols are not included. The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().If cls adopts no protocols, or cls is Nil, returns NULL and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An array of pointers of type <code>Protocol*</code> describing the protocols adopted by the class. Any protocols adopted by superclasses or other protocols are not included. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the array with <code>free()</code>.</p>\n<p>If <em>cls</em> adopts no protocols, or <em>cls</em> is <code>Nil</code>, returns <code>NULL</code> and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_createInstance",
+    "abstract": "Creates an instance of a class, allocating memory for the class in the default malloc memory zone.",
+    "declaration": "id class_createInstance(Class cls, size_t extraBytes)",
+    "declaration_xml": "<pre class=\"declaration\">\nid class_createInstance(Class cls, size_t extraBytes)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class that you wish to allocate an instance of.extraBytesAn integer indicating the number of extra bytes to allocate. The additional bytes can be used to store additional instance variables beyond those defined in the class definition.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class that you wish to allocate an instance of.</p></dd>\n<dt><em>extraBytes</em></dt>\n<dd><p>An integer indicating the number of extra bytes to allocate. The additional bytes can be used to store additional instance variables beyond those defined in the class definition.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class that you wish to allocate an instance of.",
+        "type": "Class"
+      },
+      {
+        "name": "extraBytes",
+        "description": "An integer indicating the number of extra bytes to allocate. The additional bytes can be used to store additional instance variables beyond those defined in the class definition.",
+        "type": "size_t"
+      }
+    ],
+    "return_value": "Return ValueAn instance of the class cls.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An instance of the class <em>cls</em>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/objc-auto.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/objc-auto.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getClassMethod",
+    "abstract": "Returns a pointer to the data structure describing a given class method for a given class.",
+    "declaration": "Method class_getClassMethod(Class aClass, SEL aSelector)",
+    "declaration_xml": "<pre class=\"declaration\">\nMethod class_getClassMethod(Class aClass, SEL aSelector)\n</pre>\n",
+    "api_parameters": "ParametersaClassA pointer to a class definition. Pass the class that contains the method you want to retrieve.aSelectorA pointer of type SEL. Pass the selector of the method you want to retrieve.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>aClass</em></dt>\n<dd><p>A pointer to a class definition. Pass the class that contains the method you want to retrieve.</p></dd>\n<dt><em>aSelector</em></dt>\n<dd><p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code>. Pass the selector of the method you want to retrieve.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "aClass",
+        "description": "A pointer to a class definition. Pass the class that contains the method you want to retrieve.",
+        "type": "Class"
+      },
+      {
+        "name": "aSelector",
+        "description": "A pointer of type SEL. Pass the selector of the method you want to retrieve.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueA pointer to the Method data structure that corresponds to the implementation of the selector specified by aSelector for the class specified by aClass, or NULL if the specified class or its superclasses do not contain a class method with the specified selector.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer to the <code><a href=\"#//apple_ref/c/tdef/Method\">Method</a></code> data structure that corresponds to the implementation of the selector specified by <em>aSelector</em> for the class specified by <em>aClass</em>, or <code>NULL</code> if the specified class or its superclasses do not contain a class method with the specified selector.</p>\n</div>",
+    "api_discussion": "DiscussionNote that this function searches superclasses for implementations, whereas class_copyMethodList does not.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>Note that this function searches superclasses for implementations, whereas <code><a href=\"#//apple_ref/c/func/class_copyMethodList\">class_copyMethodList</a></code> does not.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getClassVariable",
+    "abstract": "Returns the Ivar for a specified class variable of a given class.",
+    "declaration": "Ivar class_getClassVariable(Class cls, const char* name)",
+    "declaration_xml": "<pre class=\"declaration\">\nIvar class_getClassVariable(Class cls, const char* name)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class definition whose class variable you wish to obtain.nameThe name of the class variable definition to obtain.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class definition whose class variable you wish to obtain.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>The name of the class variable definition to obtain.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class definition whose class variable you wish to obtain.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "The name of the class variable definition to obtain.",
+        "type": "const char*"
+      }
+    ],
+    "return_value": "Return ValueA pointer to an Ivar data structure containing information about the class variable specified by name.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer to an <code><a href=\"#//apple_ref/c/tdef/Ivar\">Ivar</a></code> data structure containing information about the class variable specified by <code>name</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getInstanceMethod",
+    "abstract": "Returns a specified instance method for a given class.",
+    "declaration": "Method class_getInstanceMethod(Class aClass, SEL aSelector)",
+    "declaration_xml": "<pre class=\"declaration\">\nMethod class_getInstanceMethod(Class aClass, SEL aSelector)\n</pre>\n",
+    "api_parameters": "ParametersaClassThe class you want to inspect.aSelectorThe selector of the method you want to retrieve.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>aClass</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>aSelector</em></dt>\n<dd><p>The selector of the method you want to retrieve.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "aClass",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "aSelector",
+        "description": "The selector of the method you want to retrieve.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueThe method that corresponds to the implementation of the selector specified by aSelector for the class specified by aClass, or NULL if the specified class or its superclasses do not contain an instance method with the specified selector.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The method that corresponds to the implementation of the selector specified by <em>aSelector</em> for the class specified by <em>aClass</em>, or <code>NULL</code> if the specified class or its superclasses do not contain an instance method with the specified selector.</p>\n</div>",
+    "api_discussion": "DiscussionNote that this function searches superclasses for implementations, whereas class_copyMethodList does not.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>Note that this function searches superclasses for implementations, whereas <code><a href=\"#//apple_ref/c/func/class_copyMethodList\">class_copyMethodList</a></code> does not.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getInstanceSize",
+    "abstract": "Returns the size of instances of a class.",
+    "declaration": "size_t class_getInstanceSize(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nsize_t class_getInstanceSize(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsA class object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>A class object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "A class object.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueThe size in bytes of instances of the class cls, or 0 if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The size in bytes of instances of the class <em>cls</em>, or <code>0</code> if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getInstanceVariable",
+    "abstract": "Returns the Ivar for a specified instance variable of a given class.",
+    "declaration": "Ivar class_getInstanceVariable(Class cls, const char* name)",
+    "declaration_xml": "<pre class=\"declaration\">\nIvar class_getInstanceVariable(Class cls, const char* name)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class whose instance variable you wish to obtain.nameThe name of the instance variable definition to obtain.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class whose instance variable you wish to obtain.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>The name of the instance variable definition to obtain.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class whose instance variable you wish to obtain.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "The name of the instance variable definition to obtain.",
+        "type": "const char*"
+      }
+    ],
+    "return_value": "Return ValueA pointer to an Ivar data structure containing information about the instance variable specified by name.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer to an <code><a href=\"#//apple_ref/c/tdef/Ivar\">Ivar</a></code> data structure containing information about the instance variable specified by <code>name</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getIvarLayout",
+    "abstract": "Returns a description of the Ivar layout for a given class. ",
+    "declaration": "const char *class_getIvarLayout(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char *class_getIvarLayout(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to inspect.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueA description of the Ivar layout for cls. ",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A description of the <code>Ivar</code> layout for <em>cls</em>. </p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getMethodImplementation",
+    "abstract": "Returns the function pointer that would be called if a particular message were sent to an instance of a class.",
+    "declaration": "IMP class_getMethodImplementation(Class cls, SEL name)",
+    "declaration_xml": "<pre class=\"declaration\">\nIMP class_getMethodImplementation(Class cls, SEL name)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.nameA selector.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>A selector.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "A selector.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueThe function pointer that would be called if [object name] were called with an instance of the class, or NULL if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The function pointer that would be called if <code>[object name]</code> were called with an instance of the class, or <code>NULL</code> if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_discussion": "Discussionclass_getMethodImplementation may be faster than method_getImplementation(class_getInstanceMethod(cls, name)).The function pointer returned may be a function internal to the runtime instead of an actual method implementation. For example, if instances of the class do not respond to the selector, the function pointer returned will be part of the runtime's message forwarding machinery.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code>class_getMethodImplementation</code> may be faster than <code>method_getImplementation(class_getInstanceMethod(cls, name))</code>.</p>\n<p>The function pointer returned may be a function internal to the runtime instead of an actual method implementation. For example, if instances of the class do not respond to the selector, the function pointer returned will be part of the runtime's message forwarding machinery.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getMethodImplementation_stret",
+    "abstract": "Returns the function pointer that would be called if a particular message were sent to an instance of a class. ",
+    "declaration": "IMP class_getMethodImplementation_stret(Class cls, SEL name)",
+    "declaration_xml": "<pre class=\"declaration\">\nIMP class_getMethodImplementation_stret(Class cls, SEL name)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.nameA selector.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>A selector.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "A selector.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueThe function pointer that would be called if [object name] were called with an instance of the class, or NULL if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The function pointer that would be called if <code>[object name]</code> were called with an instance of the class, or <code>NULL</code> if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getName",
+    "abstract": "Returns the name of a class.",
+    "declaration": "const char * class_getName(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char * class_getName(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsA class object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>A class object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "A class object.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueThe name of the class, or the empty string if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The name of the class, or the empty string if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getProperty",
+    "abstract": "Returns a property with a given name of a given class.",
+    "declaration": "objc_property_t class_getProperty(Class cls, const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nobjc_property_t class_getProperty(Class cls, const char *name)\n</pre>\n",
+    "return_value": "Return ValueA pointer of type objc_property_t describing the property, or NULL if the class does not declare a property with that name, or NULL if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer of type <code>objc_property_t</code> describing the property, or <code>NULL</code> if the class does not declare a property with that name, or <code>NULL</code> if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getSuperclass",
+    "abstract": "Returns the superclass of a class.",
+    "declaration": "Class class_getSuperclass(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nClass class_getSuperclass(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsA class object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>A class object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "A class object.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueThe superclass of the class, or Nil if cls is a root class, or Nil if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The superclass of the class, or <code>Nil</code> if <em>cls</em> is a root class, or <code>Nil</code> if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_discussion": "DiscussionYou should usually use NSObject‘s superclass method instead of this function.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You should usually use <code>NSObject</code>‘s <code><a href=\"../../Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/superclass\" target=\"_self\">superclass</a></code> method instead of this function.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getVersion",
+    "abstract": "Returns the version number of a class definition.",
+    "declaration": "int class_getVersion(Class theClass)",
+    "declaration_xml": "<pre class=\"declaration\">\nint class_getVersion(Class theClass)\n</pre>\n",
+    "api_parameters": "ParameterstheClassA pointer to an Class data structure. Pass the class definition for which you wish to obtain the version.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>theClass</em></dt>\n<dd><p>A pointer to an <code><a href=\"#//apple_ref/c/tdef/Class\">Class</a></code> data structure. Pass the class definition for which you wish to obtain the version.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "theClass",
+        "description": "A pointer to an Class data structure. Pass the class definition for which you wish to obtain the version.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueAn integer indicating the version number of the class definition.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An integer indicating the version number of the class definition.</p>\n</div>",
+    "api_discussion": "DiscussionYou can use the version number of the class definition to provide versioning of the interface that your class represents to other classes. This is especially useful for object serialization (that is, archiving of the object in a flattened form), where it is important to recognize changes to the layout of the instance variables in different class-definition versions.Classes derived from the Foundation framework NSObject class can obtain the class-definition version number using the getVersion class method, which is implemented using the class_getVersion function.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You can use the version number of the class definition to provide versioning of the interface that your class represents to other classes. This is especially useful for object serialization (that is, archiving of the object in a flattened form), where it is important to recognize changes to the layout of the instance variables in different class-definition versions.</p>\n<p>Classes derived from the Foundation framework <code>NSObject</code> class can obtain the class-definition version number using the <code>getVersion</code> class method, which is implemented using the <code>class_getVersion</code> function.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_getWeakIvarLayout",
+    "abstract": "Returns a description of the layout of weak Ivars for a given class. ",
+    "declaration": "const char *class_getWeakIvarLayout(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char *class_getWeakIvarLayout(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to inspect.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueA description of the layout of the weak Ivars for cls. ",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A description of the layout of the weak <code>Ivar</code>s for <em>cls</em>. </p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_isMetaClass",
+    "abstract": "Returns a Boolean value that indicates whether a class object is a metaclass.",
+    "declaration": "BOOL class_isMetaClass(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL class_isMetaClass(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsA class object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>A class object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "A class object.",
+        "type": "Class"
+      }
+    ],
+    "return_value": "Return ValueYES if cls is a metaclass, NO if cls is a non-meta class, NO if cls is Nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if <em>cls</em> is a metaclass, <code>NO</code> if <em>cls</em> is a non-meta class, <code>NO</code> if <em>cls</em> is <code>Nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_replaceMethod",
+    "abstract": "Replaces the implementation of a method for a given class.",
+    "declaration": "IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)",
+    "declaration_xml": "<pre class=\"declaration\">\nIMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to modify.nameA selector that identifies the method whose implementation you want to replace.impThe new implementation for the method identified by name for the class identified by cls.typesAn array of characters that describe the types of the arguments to the method. For possible values, see Objective-C Runtime Programming Guide > “Type Encodings”. Since the function must take at least two arguments—self and _cmd, the second and third characters must be “@:” (the first character is the return type).",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to modify.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>A selector that identifies the method whose implementation you want to replace.</p></dd>\n<dt><em>imp</em></dt>\n<dd><p>The new implementation for the method identified by <em>name</em> for the class identified by <em>cls</em>.</p></dd>\n<dt><em>types</em></dt>\n<dd><p>An array of characters that describe the types of the arguments to the method. For possible values, see <em><a href=\"../../../Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008048\" target=\"_self\">Objective-C Runtime Programming Guide</a></em> &gt; <span class=\"content_text\"><a href=\"../../../Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100\" target=\"_self\">“Type Encodings”</a></span>. Since the function must take at least two arguments—<code>self</code> and <code>_cmd</code>, the second and third characters must be “<code>@:</code>” (the first character is the return type).</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to modify.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "A selector that identifies the method whose implementation you want to replace.",
+        "type": "SEL"
+      },
+      {
+        "name": "imp",
+        "description": "The new implementation for the method identified by name for the class identified by cls.",
+        "type": "IMP"
+      },
+      {
+        "name": "types",
+        "description": "An array of characters that describe the types of the arguments to the method. For possible values, see Objective-C Runtime Programming Guide > “Type Encodings”. Since the function must take at least two arguments—self and _cmd, the second and third characters must be “@:” (the first character is the return type).",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueThe previous implementation of the method identified by name for the class identified by cls.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The previous implementation of the method identified by <em>name</em> for the class identified by <em>cls</em>.</p>\n</div>",
+    "api_discussion": "DiscussionThis function behaves in two different ways:If the method identified by name does not yet exist, it is added as if class_addMethod were called. The type encoding specified by types is used as given.If the method identified by name does exist, its IMP is replaced as if method_setImplementation were called. The type encoding specified by types is ignored.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This function behaves in two different ways:</p>\n<ul class=\"ul\">\n<li class=\"li\"><p>If the method identified by <em>name</em> does not yet exist, it is added as if <code><a href=\"#//apple_ref/c/func/class_addMethod\">class_addMethod</a></code> were called. The type encoding specified by <em>types</em> is used as given.</p></li>\n<li class=\"li\"><p>If the method identified by <em>name</em> does exist, its IMP is replaced as if <code><a href=\"#//apple_ref/c/func/method_setImplementation\">method_setImplementation</a></code> were called. The type encoding specified by <em>types</em> is ignored.</p></li>\n</ul>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_respondsToSelector",
+    "abstract": "Returns a Boolean value that indicates whether instances of a class respond to a particular selector.",
+    "declaration": "BOOL class_respondsToSelector(Class cls, SEL sel)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL class_respondsToSelector(Class cls, SEL sel)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to inspect.selA selector.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to inspect.</p></dd>\n<dt><em>sel</em></dt>\n<dd><p>A selector.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to inspect.",
+        "type": "Class"
+      },
+      {
+        "name": "sel",
+        "description": "A selector.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueYES if instances of the class respond to the selector, otherwise NO.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if instances of the class respond to the selector, otherwise <code>NO</code>.</p>\n</div>",
+    "api_discussion": "DiscussionYou should usually use NSObject's respondsToSelector: or instancesRespondToSelector: methods instead of this function.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You should usually use <code>NSObject</code>'s <code><a href=\"../../Foundation/Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/respondsToSelector:\" target=\"_self\">respondsToSelector:</a></code> or <code><a href=\"../../Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/instancesRespondToSelector:\" target=\"_self\">instancesRespondToSelector:</a></code> methods instead of this function.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_setIvarLayout",
+    "abstract": "Sets the Ivar layout for a given class. ",
+    "declaration": "void class_setIvarLayout(Class cls, const char *layout)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid class_setIvarLayout(Class cls, const char *layout)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to modify.layoutThe layout of the Ivars for cls.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to modify.</p></dd>\n<dt><em>layout</em></dt>\n<dd><p>The layout of the <code>Ivar</code>s for <em>cls</em>.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to modify.",
+        "type": "Class"
+      },
+      {
+        "name": "layout",
+        "description": "The layout of the Ivars for cls.",
+        "type": "const char *"
+      }
+    ],
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_setVersion",
+    "abstract": "Sets the version number of a class definition.",
+    "declaration": "void class_setVersion(Class theClass, int version)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid class_setVersion(Class theClass, int version)\n</pre>\n",
+    "api_parameters": "ParameterstheClassA pointer to an Class data structure. Pass the class definition for which you wish to set the version.versionAn integer. Pass the new version number of the class definition.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>theClass</em></dt>\n<dd><p>A pointer to an <code><a href=\"#//apple_ref/c/tdef/Class\">Class</a></code> data structure. Pass the class definition for which you wish to set the version.</p></dd>\n<dt><em>version</em></dt>\n<dd><p>An integer. Pass the new version number of the class definition.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "theClass",
+        "description": "A pointer to an Class data structure. Pass the class definition for which you wish to set the version.",
+        "type": "Class"
+      },
+      {
+        "name": "version",
+        "description": "An integer. Pass the new version number of the class definition.",
+        "type": "int"
+      }
+    ],
+    "api_discussion": "DiscussionYou can use the version number of the class definition to provide versioning of the interface that your class represents to other classes. This is especially useful for object serialization (that is, archiving of the object in a flattened form), where it is important to recognize changes to the layout of the instance variables in different class-definition versions.Classes derived from the Foundation framework NSObject class can set the class-definition version number using the setVersion: class method, which is implemented using the class_setVersion function.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You can use the version number of the class definition to provide versioning of the interface that your class represents to other classes. This is especially useful for object serialization (that is, archiving of the object in a flattened form), where it is important to recognize changes to the layout of the instance variables in different class-definition versions.</p>\n<p>Classes derived from the Foundation framework <code>NSObject</code> class can set the class-definition version number using the <code>setVersion:</code> class method, which is implemented using the <code>class_setVersion</code> function.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "class_setWeakIvarLayout",
+    "abstract": "Sets the layout for weak Ivars for a given class. ",
+    "declaration": "void class_setWeakIvarLayout(Class cls, const char *layout)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid class_setWeakIvarLayout(Class cls, const char *layout)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class to modify.layoutThe layout of the weak Ivars for cls.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class to modify.</p></dd>\n<dt><em>layout</em></dt>\n<dd><p>The layout of the weak <code>Ivar</code>s for <em>cls</em>.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class to modify.",
+        "type": "Class"
+      },
+      {
+        "name": "layout",
+        "description": "The layout of the weak Ivars for cls.",
+        "type": "const char *"
+      }
+    ],
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "ivar_getName",
+    "abstract": "Returns the name of an instance variable.",
+    "declaration": "const char * ivar_getName(Ivar ivar)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char * ivar_getName(Ivar ivar)\n</pre>\n",
+    "return_value": "Return ValueA C string containing the instance variable's name.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string containing the instance variable's name.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "ivar_getOffset",
+    "abstract": "Returns the offset of an instance variable.",
+    "declaration": "ptrdiff_t ivar_getOffset(Ivar ivar)",
+    "declaration_xml": "<pre class=\"declaration\">\nptrdiff_t ivar_getOffset(Ivar ivar)\n</pre>\n",
+    "api_discussion": "DiscussionFor instance variables of type id or other object types, call object_getIvar and object_setIvar instead of using this offset to access the instance variable data directly.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>For instance variables of type <code>id</code> or other object types, call <code><a href=\"#//apple_ref/c/func/object_getIvar\">object_getIvar</a></code> and <code><a href=\"#//apple_ref/c/func/object_setIvar\">object_setIvar</a></code> instead of using this offset to access the instance variable data directly.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "ivar_getTypeEncoding",
+    "abstract": "Returns the type string of an instance variable.",
+    "declaration": "const char * ivar_getTypeEncoding(Ivar ivar)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char * ivar_getTypeEncoding(Ivar ivar)\n</pre>\n",
+    "return_value": "Return ValueA C string containing the instance variable's type encoding.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string containing the instance variable's type encoding.</p>\n</div>",
+    "api_discussion": "DiscussionFor possible values, see Objective-C Runtime Programming Guide > “Type Encodings”.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>For possible values, see <em><a href=\"../../../Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008048\" target=\"_self\">Objective-C Runtime Programming Guide</a></em> &gt; <span class=\"content_text\"><a href=\"../../../Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100\" target=\"_self\">“Type Encodings”</a></span>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_copyArgumentType",
+    "abstract": "Returns a string describing a single parameter type of a method.",
+    "declaration": "char * method_copyArgumentType(Method method, unsigned int index)",
+    "declaration_xml": "<pre class=\"declaration\">\nchar * method_copyArgumentType(Method method, unsigned int index)\n</pre>\n",
+    "api_parameters": "ParametersmethodThe method to inspect.indexThe index of the parameter to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>method</em></dt>\n<dd><p>The method to inspect.</p></dd>\n<dt><em>index</em></dt>\n<dd><p>The index of the parameter to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "method",
+        "description": "The method to inspect.",
+        "type": "Method"
+      },
+      {
+        "name": "index",
+        "description": "The index of the parameter to inspect.",
+        "type": "unsigned int"
+      }
+    ],
+    "return_value": "Return ValueA C string describing the type of the parameter at index index, or NULL if method has no parameter index index. You must free the string with free(). ",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string describing the type of the parameter at index <em>index</em>, or <code>NULL</code> if <em>method</em> has no parameter index <em>index</em>. You must free the string with <code>free()</code>. </p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_copyReturnType",
+    "abstract": "Returns a string describing a method's return type.",
+    "declaration": "char * method_copyReturnType(Method method)",
+    "declaration_xml": "<pre class=\"declaration\">\nchar * method_copyReturnType(Method method)\n</pre>\n",
+    "api_parameters": "ParametersmethodThe method to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>method</em></dt>\n<dd><p>The method to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "method",
+        "description": "The method to inspect.",
+        "type": "Method"
+      }
+    ],
+    "return_value": "Return ValueA C string describing the return type. You must free the string with free().",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string describing the return type. You must free the string with <code>free()</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_exchangeImplementations",
+    "abstract": "Exchanges the implementations of two methods.",
+    "declaration": "void method_exchangeImplementations(Method m1, Method m2)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid method_exchangeImplementations(Method m1, Method m2)\n</pre>\n",
+    "api_discussion": "DiscussionThis is an atomic version of the following:IMP imp1 = method_getImplementation(m1);IMP imp2 = method_getImplementation(m2);method_setImplementation(m1, imp2);method_setImplementation(m2, imp1);",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This is an atomic version of the following:</p>\n<div class=\"codesample clear\"><table>\n<tr><td scope=\"row\"><pre>IMP imp1 = method_getImplementation(m1);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>IMP imp2 = method_getImplementation(m2);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>method_setImplementation(m1, imp2);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>method_setImplementation(m2, imp1);<span></span></pre></td></tr>\n</table></div>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_getArgumentType",
+    "abstract": "Returns by reference a string describing a single parameter type of a method.",
+    "declaration": "void method_getArgumentType(Method method, unsigned int index, char *dst, size_t dst_len)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid method_getArgumentType(Method method, unsigned int index, char *dst, size_t dst_len)\n</pre>\n",
+    "api_discussion": "DiscussionThe parameter type string is copied to dst. dst is filled as if strncpy(dst, parameter_type, dst_len) were called. If the method contains no parameter with that index, dst is filled as if strncpy(dst, \"\", dst_len) were called.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>The parameter type string is copied to <em>dst</em>. <em>dst</em> is filled as if <code>strncpy(dst, parameter_type, dst_len)</code> were called. If the method contains no parameter with that index, <em>dst</em> is filled as if <code>strncpy(dst, \"\", dst_len)</code> were called.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_getImplementation",
+    "abstract": "Returns the implementation of a method.",
+    "declaration": "IMP method_getImplementation(Method method)",
+    "declaration_xml": "<pre class=\"declaration\">\nIMP method_getImplementation(Method method)\n</pre>\n",
+    "api_parameters": "ParametersmethodThe method to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>method</em></dt>\n<dd><p>The method to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "method",
+        "description": "The method to inspect.",
+        "type": "Method"
+      }
+    ],
+    "return_value": "Return ValueA function pointer of type IMP.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A function pointer of type <code>IMP</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_getName",
+    "abstract": "Returns the name of a method.",
+    "declaration": "SEL method_getName(Method method)",
+    "declaration_xml": "<pre class=\"declaration\">\nSEL method_getName(Method method)\n</pre>\n",
+    "api_parameters": "ParametersmethodThe method to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>method</em></dt>\n<dd><p>The method to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "method",
+        "description": "The method to inspect.",
+        "type": "Method"
+      }
+    ],
+    "return_value": "Return ValueA pointer of type SEL.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer of type SEL.</p>\n</div>",
+    "api_discussion": "DiscussionTo get the method name as a C string, call sel_getName(method_getName(method)).",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>To get the method name as a C string, call <code>sel_getName(method_getName(method))</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_getNumberOfArguments",
+    "abstract": "Returns the number of arguments accepted by a method.",
+    "declaration": "unsigned method_getNumberOfArguments(Method method)",
+    "declaration_xml": "<pre class=\"declaration\">\nunsigned method_getNumberOfArguments(Method method)\n</pre>\n",
+    "api_parameters": "ParametersmethodA pointer to a Method data structure. Pass the method in question.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>method</em></dt>\n<dd><p>A pointer to a <code><a href=\"#//apple_ref/c/tdef/Method\">Method</a></code> data structure. Pass the method in question.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "method",
+        "description": "A pointer to a Method data structure. Pass the method in question.",
+        "type": "Method"
+      }
+    ],
+    "return_value": "Return ValueAn integer containing the number of arguments accepted by the given method.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An integer containing the number of arguments accepted by the given method.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_getReturnType",
+    "abstract": "Returns by reference a string describing a method's return type.",
+    "declaration": "void method_getReturnType(Method method, char *dst, size_t dst_len)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid method_getReturnType(Method method, char *dst, size_t dst_len)\n</pre>\n",
+    "api_discussion": "DiscussionThe method's return type string is copied to dst. dst is filled as if strncpy(dst, parameter_type, dst_len) were called.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>The method's return type string is copied to <em>dst</em>. <em>dst</em> is filled as if <code>strncpy(dst, parameter_type, dst_len)</code> were called.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_getTypeEncoding",
+    "abstract": "Returns a string describing a method's parameter and return types.",
+    "declaration": "const char * method_getTypeEncoding(Method method)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char * method_getTypeEncoding(Method method)\n</pre>\n",
+    "api_parameters": "ParametersmethodThe method to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>method</em></dt>\n<dd><p>The method to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "method",
+        "description": "The method to inspect.",
+        "type": "Method"
+      }
+    ],
+    "return_value": "Return ValueA C string. The string may be NULL.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string. The string may be <code>NULL</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "method_setImplementation",
+    "abstract": "Sets the implementation of a method.\n",
+    "declaration": "IMP method_setImplementation(Method method, IMP imp)",
+    "declaration_xml": "<pre class=\"declaration\">\nIMP method_setImplementation(Method method, IMP imp)\n</pre>\n",
+    "return_value": "Return ValueThe previous implementation of the method.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The previous implementation of the method.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_allocateClassPair",
+    "abstract": "Creates a new class and metaclass.",
+    "declaration": "objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)",
+    "declaration_xml": "<pre class=\"declaration\">\nobjc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)\n</pre>\n",
+    "api_parameters": "ParameterssuperclassThe class to use as the new class's superclass, or Nil to create a new root class.nameThe string to use as the new class's name. The string will be copied.extraBytesThe number of bytes to allocate for indexed ivars at the end of the class and metaclass objects. This should usually be 0.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>superclass</em></dt>\n<dd><p>The class to use as the new class's superclass, or <code>Nil</code> to create a new root class.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>The string to use as the new class's name. The string will be copied.</p></dd>\n<dt><em>extraBytes</em></dt>\n<dd><p>The number of bytes to allocate for indexed ivars at the end of the class and metaclass objects. This should usually be <code>0</code>.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "superclass",
+        "description": "The class to use as the new class's superclass, or Nil to create a new root class.",
+        "type": "Class"
+      },
+      {
+        "name": "name",
+        "description": "The string to use as the new class's name. The string will be copied.",
+        "type": "const char *"
+      },
+      {
+        "name": "extraBytes",
+        "description": "The number of bytes to allocate for indexed ivars at the end of the class and metaclass objects. This should usually be 0.",
+        "type": "size_t"
+      }
+    ],
+    "return_value": "Return ValueThe new class, or Nil if the class could not be created (for example, the desired name is already in use). ",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The new class, or <code>Nil</code> if the class could not be created (for example, the desired name is already in use). </p>\n</div>",
+    "api_discussion": "DiscussionYou can get a pointer to the new metaclass by calling object_getClass(newClass).To create a new class, start by calling objc_allocateClassPair. Then set the class's attributes with functions like class_addMethod and class_addIvar. When you are done building the class, call objc_registerClassPair. The new class is now ready for use.Instance methods and instance variables should be added to the class itself. Class methods should be added to the metaclass.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You can get a pointer to the new metaclass by calling <code>object_getClass(newClass)</code>.</p>\n<p>To create a new class, start by calling <code>objc_allocateClassPair</code>. Then set the class's attributes with functions like <code><a href=\"#//apple_ref/c/func/class_addMethod\">class_addMethod</a></code> and <code><a href=\"#//apple_ref/c/func/class_addIvar\">class_addIvar</a></code>. When you are done building the class, call <code><a href=\"#//apple_ref/c/func/objc_registerClassPair\">objc_registerClassPair</a></code>. The new class is now ready for use.</p>\n<p>Instance methods and instance variables should be added to the class itself. Class methods should be added to the metaclass.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_copyProtocolList",
+    "abstract": "Returns an array of all the protocols known to the runtime. ",
+    "declaration": "Protocol **objc_copyProtocolList(unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nProtocol **objc_copyProtocolList(unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersoutCountUpon return, contains the number of protocols in the returned array.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>outCount</em></dt>\n<dd><p>Upon return, contains the number of protocols in the returned array.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "outCount",
+        "description": "Upon return, contains the number of protocols in the returned array.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueA C array of all the protocols known to the runtime. The array contains *outCount pointers followed by a NULL terminator. You must free the list with free().",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C array of all the protocols known to the runtime. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the list with <code>free()</code>.</p>\n</div>",
+    "api_discussion": "DiscussionThis function acquires the runtime lock.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This function acquires the runtime lock.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_duplicateClass",
+    "abstract": "Used by Foundation's Key-Value Observing.",
+    "declaration": "objc_duplicateClass",
+    "declaration_xml": "<pre class=\"declaration\">\nobjc_duplicateClass\n</pre>\n",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getAssociatedObject",
+    "abstract": "Returns the value associated with a given object for a given key. ",
+    "declaration": "id objc_getAssociatedObject(id object, void *key)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_getAssociatedObject(id object, void *key)\n</pre>\n",
+    "api_parameters": "ParametersobjectThe source object for the association.keyThe key for the association.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>The source object for the association.</p></dd>\n<dt><em>key</em></dt>\n<dd><p>The key for the association.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "The source object for the association.",
+        "type": "id"
+      },
+      {
+        "name": "key",
+        "description": "The key for the association.",
+        "type": "void *"
+      }
+    ],
+    "return_value": "Return ValueThe value associated with the key key for object.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The value associated with the key <em>key</em> for <em>object</em>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 3.1 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 3.1 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getClass",
+    "abstract": "Returns the class definition of a specified class.",
+    "declaration": "id objc_getClass(const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_getClass(const char *name)\n</pre>\n",
+    "api_parameters": "ParametersnameThe name of the class to look up.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>name</em></dt>\n<dd><p>The name of the class to look up.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "name",
+        "description": "The name of the class to look up.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueThe Class object for the named class, or nil if the class is not registered with the Objective-C runtime.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The Class object for the named class, or <code><a href=\"#//apple_ref/doc/c_ref/nil\">nil</a></code> if the class is not registered with the Objective-C runtime.</p>\n</div>",
+    "api_discussion": "Discussionobjc_getClass is different from objc_lookUpClass in that if the class is not registered, objc_getClass calls the class handler callback and then checks a second time to see whether the class is registered. objc_lookUpClass does not call the class handler callback.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code>objc_getClass</code> is different from <code><a href=\"#//apple_ref/c/func/objc_lookUpClass\">objc_lookUpClass</a></code> in that if the class is not registered, <code>objc_getClass</code> calls the class handler callback and then checks a second time to see whether the class is registered. <code><a href=\"#//apple_ref/c/func/objc_lookUpClass\">objc_lookUpClass</a></code> does not call the class handler callback.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getClassList",
+    "abstract": "Obtains the list of registered class definitions.",
+    "declaration": "int objc_getClassList(Class *buffer, int bufferLen)",
+    "declaration_xml": "<pre class=\"declaration\">\nint objc_getClassList(Class *buffer, int bufferLen)\n</pre>\n",
+    "api_parameters": "ParametersbufferAn array of Class values. On output, each Class value points to one class definition, up to either bufferLen or the total number of registered classes, whichever is less. You can pass NULL to obtain the total number of registered class definitions without actually retrieving any class definitions.bufferLenAn integer value. Pass the number of pointers for which you have allocated space in buffer. On return, this function fills in only this number of elements. If this number is less than the number of registered classes, this function returns an arbitrary subset of the registered classes.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>buffer</em></dt>\n<dd><p>An array of <code>Class</code> values. On output, each <code>Class</code> value points to one class definition, up to either <code>bufferLen</code> or the total number of registered classes, whichever is less. You can pass <code><!--a  -->NULL<!--/a--></code> to obtain the total number of registered class definitions without actually retrieving any class definitions.</p></dd>\n<dt><em>bufferLen</em></dt>\n<dd><p>An integer value. Pass the number of pointers for which you have allocated space in <code>buffer</code>. On return, this function fills in only this number of elements. If this number is less than the number of registered classes, this function returns an arbitrary subset of the registered classes.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "buffer",
+        "description": "An array of Class values. On output, each Class value points to one class definition, up to either bufferLen or the total number of registered classes, whichever is less. You can pass NULL to obtain the total number of registered class definitions without actually retrieving any class definitions.",
+        "type": "int"
+      },
+      {
+        "name": "bufferLen",
+        "description": "An integer value. Pass the number of pointers for which you have allocated space in buffer. On return, this function fills in only this number of elements. If this number is less than the number of registered classes, this function returns an arbitrary subset of the registered classes.",
+        "type": "int"
+      }
+    ],
+    "return_value": "Return ValueAn integer value indicating the total number of registered classes.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An integer value indicating the total number of registered classes.</p>\n</div>",
+    "api_discussion": "DiscussionThe Objective-C runtime library automatically registers all the classes defined in your source code. You can create class definitions at runtime and register them with the objc_addClass function.Listing 1 demonstrates how to use this function to retrieve all the class definitions that have been registered with the Objective-C runtime in the current process.Listing 1  Using objc_getClassListint numClasses;Class * classes = NULL; classes = NULL;numClasses = objc_getClassList(NULL, 0); if (numClasses > 0 ){    classes = malloc(sizeof(Class) * numClasses);    numClasses = objc_getClassList(classes, numClasses);    free(classes);}",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>The Objective-C runtime library automatically registers all the classes defined in your source code. You can create class definitions at runtime and register them with the <code>objc_addClass</code> function.</p>\n<p><span class=\"content_text\">Listing 1</span> demonstrates how to use this function to retrieve all the class definitions that have been registered with the Objective-C runtime in the current process.</p>\n<a name=\"//apple_ref/doc/uid/TP40001418-CH1g-125153\" title=\"Listing 1Using objc_getClassList\"></a><a name=\"//apple_ref/doc/uid/TP40001418-CH1g-BCIHBEGJ\" title=\"Listing 1Using objc_getClassList\"></a><p class=\"codesample clear\"><strong class=\"caption_number\">Listing 1</strong>  Using objc_getClassList</p>\n<div class=\"codesample clear\"><table>\n<tr><td scope=\"row\"><pre>int numClasses;<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>Class * classes = NULL;<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre> <span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>classes = NULL;<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>numClasses = objc_getClassList(NULL, 0);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre> <span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>if (numClasses &gt; 0 )<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>{<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>    classes = malloc(sizeof(Class) * numClasses);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>    numClasses = objc_getClassList(classes, numClasses);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>    free(classes);<span></span></pre></td></tr>\n<tr><td scope=\"row\"><pre>}<span></span></pre></td></tr>\n</table></div>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getFutureClass",
+    "abstract": "Used by CoreFoundation's toll-free bridging.",
+    "declaration": "Class objc_getFutureClass(const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nClass objc_getFutureClass(const char *name)\n</pre>\n",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getMetaClass",
+    "abstract": "Returns the metaclass definition of a specified class.",
+    "declaration": "id objc_getMetaClass(const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_getMetaClass(const char *name)\n</pre>\n",
+    "api_parameters": "ParametersnameThe name of the class to look up.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>name</em></dt>\n<dd><p>The name of the class to look up.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "name",
+        "description": "The name of the class to look up.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueThe Class object for the metaclass of the named class, or nil if the class is not registered with the Objective-C runtime.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The <code>Class</code> object for the metaclass of the named class, or <code><a href=\"#//apple_ref/doc/c_ref/nil\">nil</a></code> if the class is not registered with the Objective-C runtime.</p>\n</div>",
+    "api_discussion": "DiscussionIf the definition for the named class is not registered, this function calls the class handler callback and then checks a second time to see if the class is registered. However, every class definition must have a valid metaclass definition, and so the metaclass definition is always returned, whether it’s valid or not.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>If the definition for the named class is not registered, this function calls the class handler callback and then checks a second time to see if the class is registered. However, every class definition must have a valid metaclass definition, and so the metaclass definition is always returned, whether it’s valid or not.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getProtocol",
+    "abstract": "Returns a specified protocol. ",
+    "declaration": "Protocol *objc_getProtocol(const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nProtocol *objc_getProtocol(const char *name)\n</pre>\n",
+    "api_parameters": "ParametersnameThe name of a protocol.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>name</em></dt>\n<dd><p>The name of a protocol.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "name",
+        "description": "The name of a protocol.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueThe protocol named name, or NULL if no protocol named name could be found.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The protocol named <em>name</em>, or <code>NULL</code> if no protocol named <em>name</em> could be found.</p>\n</div>",
+    "api_discussion": "DiscussionThis function acquires the runtime lock.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This function acquires the runtime lock.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_getRequiredClass",
+    "abstract": "Returns the class definition of a specified class. ",
+    "declaration": "id objc_getRequiredClass(const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_getRequiredClass(const char *name)\n</pre>\n",
+    "api_parameters": "ParametersnameThe name of the class to look up.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>name</em></dt>\n<dd><p>The name of the class to look up.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "name",
+        "description": "The name of the class to look up.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueThe Class object for the named class.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The Class object for the named class.</p>\n</div>",
+    "api_discussion": "DiscussionThis function is the same as objc_getClass, but kills the process if the class is not found.This function is used by ZeroLink, where failing to find a class would be a compile-time link error without ZeroLink.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This function is the same as <code><a href=\"#//apple_ref/c/func/objc_getClass\">objc_getClass</a></code>, but kills the process if the class is not found.</p>\n<p>This function is used by ZeroLink, where failing to find a class would be a compile-time link error without ZeroLink.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_lookUpClass",
+    "abstract": "Returns the class definition of a specified class.",
+    "declaration": "id objc_lookUpClass(const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_lookUpClass(const char *name)\n</pre>\n",
+    "api_parameters": "ParametersnameThe name of the class to look up.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>name</em></dt>\n<dd><p>The name of the class to look up.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "name",
+        "description": "The name of the class to look up.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueThe Class object for the named class, or nil if the class is not registered with the Objective-C runtime.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The Class object for the named class, or <code><a href=\"#//apple_ref/doc/c_ref/nil\">nil</a></code> if the class is not registered with the Objective-C runtime.</p>\n</div>",
+    "api_discussion": "Discussionobjc_getClass is different from this function in that if the class is not registered, objc_getClass calls the class handler callback and then checks a second time to see whether the class is registered. This function does not call the class handler callback.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code><a href=\"#//apple_ref/c/func/objc_getClass\">objc_getClass</a></code> is different from this function in that if the class is not registered, <code><a href=\"#//apple_ref/c/func/objc_getClass\">objc_getClass</a></code> calls the class handler callback and then checks a second time to see whether the class is registered. This function does not call the class handler callback.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_msgSend",
+    "abstract": "Sends a message with a simple return value to an instance of a class.",
+    "declaration": "id objc_msgSend(id theReceiver, SEL theSelector, ...)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_msgSend(id theReceiver, SEL theSelector, ...)\n</pre>\n",
+    "api_parameters": "ParameterstheReceiverA pointer that points to the instance of the class that is to receive the message.theSelectorThe selector of the method that handles the message....A variable argument list containing the arguments to the method.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>theReceiver</em></dt>\n<dd><p>A pointer that points to the instance of the class that is to receive the message.</p></dd>\n<dt><em>theSelector</em></dt>\n<dd><p>The selector of the method that handles the message.</p></dd>\n<dt><em>...</em></dt>\n<dd><p>A variable argument list containing the arguments to the method.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "theReceiver",
+        "description": "A pointer that points to the instance of the class that is to receive the message.",
+        "type": "id"
+      },
+      {
+        "name": "theSelector",
+        "description": "The selector of the method that handles the message.",
+        "type": "SEL"
+      },
+      {
+        "name": "...",
+        "description": "A variable argument list containing the arguments to the method.",
+        "type": "TYPE"
+      }
+    ],
+    "return_value": "Return ValueThe return value of the method.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The return value of the method.</p>\n</div>",
+    "api_discussion": "DiscussionWhen it encounters a method call, the compiler generates a call to one of the functions objc_msgSend, objc_msgSend_stret, objc_msgSendSuper, or objc_msgSendSuper_stret. Messages sent to an object’s superclass (using the super keyword) are sent using objc_msgSendSuper; other messages are sent using objc_msgSend. Methods that have data structures as return values are sent using objc_msgSendSuper_stret and objc_msgSend_stret.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>When it encounters a method call, the compiler generates a call to one of the functions <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend\">objc_msgSend</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend_stret\">objc_msgSend_stret</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper\">objc_msgSendSuper</a></code>, or <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper_stret\">objc_msgSendSuper_stret</a></code>. Messages sent to an object’s superclass (using the <code>super</code> keyword) are sent using <code>objc_msgSendSuper</code>; other messages are sent using <code>objc_msgSend</code>. Methods that have data structures as return values are sent using <code>objc_msgSendSuper_stret</code> and <code>objc_msgSend_stret</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/message.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/message.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_msgSendSuper",
+    "abstract": "Sends a message with a simple return value to the superclass of an instance of a class.",
+    "declaration": "id objc_msgSendSuper(struct objc_super *super, SEL op,  ...)",
+    "declaration_xml": "<pre class=\"declaration\">\nid objc_msgSendSuper(struct objc_super *super, SEL op,  ...)\n</pre>\n",
+    "api_parameters": "ParameterssuperA pointer to an objc_super data structure. Pass values identifying the context the message was sent to, including the instance of the class that is to receive the message and the superclass at which to start searching for the method implementation.opA pointer of type SEL. Pass the selector of the method that will handle the message....A variable argument list containing the arguments to the method.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>super</em></dt>\n<dd><p>A pointer to an <code><a href=\"#//apple_ref/c/tag/objc_super\">objc_super</a></code> data structure. Pass values identifying the context the message was sent to, including the instance of the class that is to receive the message and the superclass at which to start searching for the method implementation.</p></dd>\n<dt><em>op</em></dt>\n<dd><p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code>. Pass the selector of the method that will handle the message.</p></dd>\n<dt><em>...</em></dt>\n<dd><p>A variable argument list containing the arguments to the method.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "super",
+        "description": "A pointer to an objc_super data structure. Pass values identifying the context the message was sent to, including the instance of the class that is to receive the message and the superclass at which to start searching for the method implementation.",
+        "type": "struct objc_super *"
+      },
+      {
+        "name": "op",
+        "description": "A pointer of type SEL. Pass the selector of the method that will handle the message.",
+        "type": "SEL"
+      },
+      {
+        "name": "...",
+        "description": "A variable argument list containing the arguments to the method.",
+        "type": "TYPE"
+      }
+    ],
+    "return_value": "Return ValueThe return value of the method identified by op.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The return value of the method identified by <em>op</em>.</p>\n</div>",
+    "api_discussion": "DiscussionWhen it encounters a method call, the compiler generates a call to one of the functions objc_msgSend, objc_msgSend_stret, objc_msgSendSuper, or objc_msgSendSuper_stret. Messages sent to an object’s superclass (using the super keyword) are sent using objc_msgSendSuper; other messages are sent using objc_msgSend. Methods that have data structures as return values are sent using objc_msgSendSuper_stret and objc_msgSend_stret.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>When it encounters a method call, the compiler generates a call to one of the functions <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend\">objc_msgSend</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend_stret\">objc_msgSend_stret</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper\">objc_msgSendSuper</a></code>, or <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper_stret\">objc_msgSendSuper_stret</a></code>. Messages sent to an object’s superclass (using the <code>super</code> keyword) are sent using <code>objc_msgSendSuper</code>; other messages are sent using <code>objc_msgSend</code>. Methods that have data structures as return values are sent using <code>objc_msgSendSuper_stret</code> and <code>objc_msgSend_stret</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/message.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/message.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_msgSendSuper_stret",
+    "abstract": "Sends a message with a data-structure return value to the superclass of an instance of a class.",
+    "declaration": "void objc_msgSendSuper_stret(struct objc_super *super, SEL op, ...)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid objc_msgSendSuper_stret(struct objc_super *super, SEL op, ...)\n</pre>\n",
+    "api_parameters": "ParameterssuperA pointer to an objc_super data structure. Pass values identifying the context the message was sent to, including the instance of the class that is to receive the message and the superclass at which to start searching for the method implementation.opA pointer of type SEL. Pass the selector of the method....A variable argument list containing the arguments to the method.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>super</em></dt>\n<dd><p>A pointer to an <code><a href=\"#//apple_ref/c/tag/objc_super\">objc_super</a></code> data structure. Pass values identifying the context the message was sent to, including the instance of the class that is to receive the message and the superclass at which to start searching for the method implementation.</p></dd>\n<dt><em>op</em></dt>\n<dd><p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code>. Pass the selector of the method.</p></dd>\n<dt><em>...</em></dt>\n<dd><p>A variable argument list containing the arguments to the method.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "super",
+        "description": "A pointer to an objc_super data structure. Pass values identifying the context the message was sent to, including the instance of the class that is to receive the message and the superclass at which to start searching for the method implementation.",
+        "type": "struct objc_super *"
+      },
+      {
+        "name": "op",
+        "description": "A pointer of type SEL. Pass the selector of the method.",
+        "type": "SEL"
+      },
+      {
+        "name": "...",
+        "description": "A variable argument list containing the arguments to the method.",
+        "type": "TYPE"
+      }
+    ],
+    "api_discussion": "DiscussionWhen it encounters a method call, the compiler generates a call to one of the functions objc_msgSend, objc_msgSend_stret, objc_msgSendSuper, or objc_msgSendSuper_stret. Messages sent to an object’s superclass (using the super keyword) are sent using objc_msgSendSuper; other messages are sent using objc_msgSend. Methods that have data structures as return values are sent using objc_msgSendSuper_stret and objc_msgSend_stret.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>When it encounters a method call, the compiler generates a call to one of the functions <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend\">objc_msgSend</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend_stret\">objc_msgSend_stret</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper\">objc_msgSendSuper</a></code>, or <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper_stret\">objc_msgSendSuper_stret</a></code>. Messages sent to an object’s superclass (using the <code>super</code> keyword) are sent using <code>objc_msgSendSuper</code>; other messages are sent using <code>objc_msgSend</code>. Methods that have data structures as return values are sent using <code>objc_msgSendSuper_stret</code> and <code>objc_msgSend_stret</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/message.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/message.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_msgSend_stret",
+    "abstract": "Sends a message with a data-structure return value to an instance of a class.",
+    "declaration": "void objc_msgSend_stret(void * stretAddr, id theReceiver, SEL theSelector,  ...)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid objc_msgSend_stret(void * stretAddr, id theReceiver, SEL theSelector,  ...)\n</pre>\n",
+    "api_parameters": "ParametersstretAddrOn input, a pointer that points to a block of memory large enough to contain the return value of the method. On output, contains the return value of the method.theReceiverA pointer to the instance of the class that is to receive the message.theSelectorA pointer of type SEL. Pass the selector of the method that handles the message....A variable argument list containing the arguments to the method.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>stretAddr</em></dt>\n<dd><p>On input, a pointer that points to a block of memory large enough to contain the return value of the method. On output, contains the return value of the method.</p></dd>\n<dt><em>theReceiver</em></dt>\n<dd><p>A pointer to the instance of the class that is to receive the message.</p></dd>\n<dt><em>theSelector</em></dt>\n<dd><p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code>. Pass the selector of the method that handles the message.</p></dd>\n<dt><em>...</em></dt>\n<dd><p>A variable argument list containing the arguments to the method.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "stretAddr",
+        "description": "On input, a pointer that points to a block of memory large enough to contain the return value of the method. On output, contains the return value of the method.",
+        "type": "void *"
+      },
+      {
+        "name": "theReceiver",
+        "description": "A pointer to the instance of the class that is to receive the message.",
+        "type": "id"
+      },
+      {
+        "name": "theSelector",
+        "description": "A pointer of type SEL. Pass the selector of the method that handles the message.",
+        "type": "SEL"
+      },
+      {
+        "name": "...",
+        "description": "A variable argument list containing the arguments to the method.",
+        "type": "TYPE"
+      }
+    ],
+    "api_discussion": "DiscussionWhen it encounters a method call, the compiler generates a call to one of the functions objc_msgSend, objc_msgSend_stret, objc_msgSendSuper, or objc_msgSendSuper_stret. Messages sent to an object’s superclass (using the super keyword) are sent using objc_msgSendSuper; other messages are sent using objc_msgSend. Methods that have data structures as return values are sent using objc_msgSendSuper_stret and objc_msgSend_stret.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>When it encounters a method call, the compiler generates a call to one of the functions <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend\">objc_msgSend</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSend_stret\">objc_msgSend_stret</a></code>, <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper\">objc_msgSendSuper</a></code>, or <code><a href=\"#//apple_ref/doc/c_ref/objc_msgSendSuper_stret\">objc_msgSendSuper_stret</a></code>. Messages sent to an object’s superclass (using the <code>super</code> keyword) are sent using <code>objc_msgSendSuper</code>; other messages are sent using <code>objc_msgSend</code>. Methods that have data structures as return values are sent using <code>objc_msgSendSuper_stret</code> and <code>objc_msgSend_stret</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/message.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/message.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_registerClassPair",
+    "abstract": "Registers a class that was allocated using objc_allocateClassPair.",
+    "declaration": "void objc_registerClassPair(Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid objc_registerClassPair(Class cls)\n</pre>\n",
+    "api_parameters": "ParametersclsThe class you want to register.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>cls</em></dt>\n<dd><p>The class you want to register.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "cls",
+        "description": "The class you want to register.",
+        "type": "Class"
+      }
+    ],
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_removeAssociatedObjects",
+    "abstract": "Removes all associations for a given object.",
+    "declaration": "void objc_removeAssociatedObjects(id object)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid objc_removeAssociatedObjects(id object)\n</pre>\n",
+    "api_parameters": "ParametersobjectAn object that maintains associated objects.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>An object that maintains associated objects.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "An object that maintains associated objects.",
+        "type": "id"
+      }
+    ],
+    "api_discussion": "DiscussionThe main purpose of this function is to make it easy to return an object to a \"pristine state”. You should not use this function for general removal of associations from objects, since it also removes associations that other clients may have added to the object. Typically you should use objc_setAssociatedObject with a nil value to clear an association.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>The main purpose of this function is to make it easy to return an object to a \"pristine state”. You should not use this function for general removal of associations from objects, since it also removes associations that other clients may have added to the object. Typically you should use <code><a href=\"#//apple_ref/c/func/objc_setAssociatedObject\">objc_setAssociatedObject</a></code> with a <code>nil</code> value to clear an association.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 3.1 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 3.1 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_setAssociatedObject",
+    "abstract": "Sets an associated value for a given object using a given key and association policy. ",
+    "declaration": "void objc_setAssociatedObject(id object, void *key, id value, objc_AssociationPolicy policy)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid objc_setAssociatedObject(id object, void *key, id value, objc_AssociationPolicy policy)\n</pre>\n",
+    "api_parameters": "ParametersobjectThe source object for the association.keyThe key for the association.valueThe value to associate with the key key for object. Pass nil to clear an existing association.policyThe policy for the association. For possible values, see “Associative Object Behaviors.”",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>The source object for the association.</p></dd>\n<dt><em>key</em></dt>\n<dd><p>The key for the association.</p></dd>\n<dt><em>value</em></dt>\n<dd><p>The value to associate with the key <em>key</em> for <em>object</em>. Pass <em>nil</em> to clear an existing association.</p></dd>\n<dt><em>policy</em></dt>\n<dd><p>The policy for the association. For possible values, see <span class=\"content_text\"><a href=\"#//apple_ref/doc/constant_group/Associative_Object_Behaviors\">“Associative Object Behaviors.”</a></span></p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "The source object for the association.",
+        "type": "id"
+      },
+      {
+        "name": "key",
+        "description": "The key for the association.",
+        "type": "void *"
+      },
+      {
+        "name": "value",
+        "description": "The value to associate with the key key for object. Pass nil to clear an existing association.",
+        "type": "id"
+      },
+      {
+        "name": "policy",
+        "description": "The policy for the association. For possible values, see “Associative Object Behaviors.”",
+        "type": "objc_AssociationPolicy"
+      }
+    ],
+    "api_availability": "AvailabilityAvailable in iOS 3.1 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 3.1 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "objc_setFutureClass",
+    "abstract": "Used by CoreFoundation's toll-free bridging.",
+    "declaration": "void objc_setFutureClass(Class cls, const char *name)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid objc_setFutureClass(Class cls, const char *name)\n</pre>\n",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_copy",
+    "abstract": "Returns a copy of a given object. ",
+    "declaration": "id object_copy(id obj, size_t size)",
+    "declaration_xml": "<pre class=\"declaration\">\nid object_copy(id obj, size_t size)\n</pre>\n",
+    "api_parameters": "ParametersobjAn Objective-C object.sizeThe size of the object obj.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>obj</em></dt>\n<dd><p>An Objective-C object.</p></dd>\n<dt><em>size</em></dt>\n<dd><p>The size of the object <em>obj</em>.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "obj",
+        "description": "An Objective-C object.",
+        "type": "id"
+      },
+      {
+        "name": "size",
+        "description": "The size of the object obj.",
+        "type": "size_t"
+      }
+    ],
+    "return_value": "Return ValueA copy of obj.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A copy of <em>obj</em>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_dispose",
+    "abstract": "Frees the memory occupied by a given object. ",
+    "declaration": "id object_dispose(id obj)",
+    "declaration_xml": "<pre class=\"declaration\">\nid object_dispose(id obj)\n</pre>\n",
+    "api_parameters": "ParametersobjAn Objective-C object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>obj</em></dt>\n<dd><p>An Objective-C object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "obj",
+        "description": "An Objective-C object.",
+        "type": "id"
+      }
+    ],
+    "return_value": "Return Valuenil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_getClass",
+    "abstract": "Returns the class of an object. ",
+    "declaration": "Class object_getClass(id object)",
+    "declaration_xml": "<pre class=\"declaration\">\nClass object_getClass(id object)\n</pre>\n",
+    "api_parameters": "ParametersobjectThe object you want to inspect.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>The object you want to inspect.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "The object you want to inspect.",
+        "type": "id"
+      }
+    ],
+    "return_value": "Return ValueThe class object of which object is an instance, or Nil if object is nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The class object of which <em>object</em> is an instance, or <code>Nil</code> if <em>object</em> is <code>nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_getClassName",
+    "abstract": "Returns the class name of a given object.",
+    "declaration": "const char *object_getClassName(id obj)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char *object_getClassName(id obj)\n</pre>\n",
+    "api_parameters": "ParametersobjAn Objective-C object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>obj</em></dt>\n<dd><p>An Objective-C object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "obj",
+        "description": "An Objective-C object.",
+        "type": "id"
+      }
+    ],
+    "return_value": "Return ValueThe name of the class of which obj is an instance.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The name of the class of which <em>obj</em> is an instance.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/objc.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/objc.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_getIndexedIvars",
+    "abstract": "Returns a pointer to any extra bytes allocated with a instance given object.",
+    "declaration": "OBJC_EXPORT void *object_getIndexedIvars(id obj)",
+    "declaration_xml": "<pre class=\"declaration\">\nOBJC_EXPORT void *object_getIndexedIvars(id obj)\n</pre>\n",
+    "api_parameters": "ParametersobjAn Objective-C object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>obj</em></dt>\n<dd><p>An Objective-C object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "obj",
+        "description": "An Objective-C object.",
+        "type": "id"
+      }
+    ],
+    "return_value": "Return ValueA pointer to any extra bytes allocated with obj. If obj was not allocated with any extra bytes, then dereferencing the returned pointer is undefined.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer to any extra bytes allocated with <em>obj</em>. If <em>obj</em> was not allocated with any extra bytes, then dereferencing the returned pointer is undefined.</p>\n</div>",
+    "api_discussion": "DiscussionThis function returns a pointer to any extra bytes allocated with the instance (as specified by class_createInstance with extraBytes>0). This memory follows the object's ordinary ivars, but may not be adjacent to the last ivar. The returned pointer is guaranteed to be pointer-size aligned, even if the area following the object's last ivar is less aligned than that. Alignment greater than pointer-size is never guaranteed, even if the area following the object's last ivar is more aligned than that.In a garbage-collected environment, the memory is scanned conservatively.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>This function returns a pointer to any extra bytes allocated with the instance (as specified by <code><a href=\"#//apple_ref/c/func/class_createInstance\">class_createInstance</a></code> with extraBytes&gt;0). This memory follows the object's ordinary ivars, but may not be adjacent to the last ivar. </p>\n<p>The returned pointer is guaranteed to be pointer-size aligned, even if the area following the object's last ivar is less aligned than that. Alignment greater than pointer-size is never guaranteed, even if the area following the object's last ivar is more aligned than that.</p>\n<p>In a garbage-collected environment, the memory is scanned conservatively.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/objc.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/objc.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_getInstanceVariable",
+    "abstract": "Obtains the value of an instance variable of a class instance.",
+    "declaration": "Ivar object_getInstanceVariable(id obj, const char *name, void **outValue)",
+    "declaration_xml": "<pre class=\"declaration\">\nIvar object_getInstanceVariable(id obj, const char *name, void **outValue)\n</pre>\n",
+    "api_parameters": "ParametersobjA pointer to an instance of a class. Pass the object containing the instance variable whose value you wish to obtain.nameA C string. Pass the name of the instance variable whose value you wish to obtain.outValueOn return, contains a pointer to the value of the instance variable.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>obj</em></dt>\n<dd><p>A pointer to an instance of a class. Pass the object containing the instance variable whose value you wish to obtain.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>A C string. Pass the name of the instance variable whose value you wish to obtain.</p></dd>\n<dt><em>outValue</em></dt>\n<dd><p>On return, contains a pointer to the value of the instance variable.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "obj",
+        "description": "A pointer to an instance of a class. Pass the object containing the instance variable whose value you wish to obtain.",
+        "type": "id"
+      },
+      {
+        "name": "name",
+        "description": "A C string. Pass the name of the instance variable whose value you wish to obtain.",
+        "type": "const char *"
+      },
+      {
+        "name": "outValue",
+        "description": "On return, contains a pointer to the value of the instance variable.",
+        "type": "void **"
+      }
+    ],
+    "return_value": "Return ValueA pointer to the Ivar data structure that defines the type and name of the instance variable specified by name.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer to the <code><a href=\"#//apple_ref/c/tdef/Ivar\">Ivar</a></code> data structure that defines the type and name of the instance variable specified by <code>name</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_getIvar",
+    "abstract": "Reads the value of an instance variable in an object.",
+    "declaration": "id object_getIvar(id object, Ivar ivar)",
+    "declaration_xml": "<pre class=\"declaration\">\nid object_getIvar(id object, Ivar ivar)\n</pre>\n",
+    "api_parameters": "ParametersobjectThe object containing the instance variable whose value you want to read.ivarThe Ivar describing the instance variable whose value you want to read.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>The object containing the instance variable whose value you want to read.</p></dd>\n<dt><em>ivar</em></dt>\n<dd><p>The Ivar describing the instance variable whose value you want to read.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "The object containing the instance variable whose value you want to read.",
+        "type": "id"
+      },
+      {
+        "name": "ivar",
+        "description": "The Ivar describing the instance variable whose value you want to read.",
+        "type": "Ivar"
+      }
+    ],
+    "return_value": "Return ValueThe value of the instance variable specified by ivar, or nil if object is nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The value of the instance variable specified by <em>ivar</em>, or <code>nil</code> if <em>object</em> is <code>nil</code>.</p>\n</div>",
+    "api_discussion": "Discussionobject_getIvar is faster than object_getInstanceVariable if the Ivar for the instance variable is already known.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code>object_getIvar</code> is faster than <code><a href=\"#//apple_ref/c/func/object_getInstanceVariable\">object_getInstanceVariable</a></code> if the Ivar for the instance variable is already known.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_setClass",
+    "abstract": "Sets the class of an object.",
+    "declaration": "Class object_setClass(id object, Class cls)",
+    "declaration_xml": "<pre class=\"declaration\">\nClass object_setClass(id object, Class cls)\n</pre>\n",
+    "api_parameters": "ParametersobjectThe object to modify.selA class object.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>The object to modify.</p></dd>\n<dt><em>sel</em></dt>\n<dd><p>A class object.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "The object to modify.",
+        "type": "id"
+      },
+      {
+        "name": "sel",
+        "description": "A class object.",
+        "type": "TYPE"
+      }
+    ],
+    "return_value": "Return ValueThe previous value of object‘s class, or Nil if object is nil.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The previous value of <em>object</em>‘s class, or <code>Nil</code> if <em>object</em> is <code>nil</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_setInstanceVariable",
+    "abstract": "Changes the value of an instance variable of a class instance.",
+    "declaration": "Ivar object_setInstanceVariable(id obj, const char *name, void *value)",
+    "declaration_xml": "<pre class=\"declaration\">\nIvar object_setInstanceVariable(id obj, const char *name, void *value)\n</pre>\n",
+    "api_parameters": "ParametersobjA pointer to an instance of a class. Pass the object containing the instance variable whose value you wish to modify.nameA C string. Pass the name of the instance variable whose value you wish to modify.valueThe new value for the instance variable.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>obj</em></dt>\n<dd><p>A pointer to an instance of a class. Pass the object containing the instance variable whose value you wish to modify.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>A C string. Pass the name of the instance variable whose value you wish to modify.</p></dd>\n<dt><em>value</em></dt>\n<dd><p>The new value for the instance variable.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "obj",
+        "description": "A pointer to an instance of a class. Pass the object containing the instance variable whose value you wish to modify.",
+        "type": "id"
+      },
+      {
+        "name": "name",
+        "description": "A C string. Pass the name of the instance variable whose value you wish to modify.",
+        "type": "const char *"
+      },
+      {
+        "name": "value",
+        "description": "The new value for the instance variable.",
+        "type": "void *"
+      }
+    ],
+    "return_value": "Return ValueA pointer to the Ivar data structure that defines the type and name of the instance variable specified by name.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer to the <code><a href=\"#//apple_ref/c/tdef/Ivar\">Ivar</a></code> data structure that defines the type and name of the instance variable specified by <code>name</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "object_setIvar",
+    "abstract": "Sets the value of an instance variable in an object.",
+    "declaration": "void object_setIvar(id object, Ivar ivar, id value)",
+    "declaration_xml": "<pre class=\"declaration\">\nvoid object_setIvar(id object, Ivar ivar, id value)\n</pre>\n",
+    "api_parameters": "ParametersobjectThe object containing the instance variable whose value you want to set.ivarThe Ivar describing the instance variable whose value you want to set.valueThe new value for the instance variable.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>object</em></dt>\n<dd><p>The object containing the instance variable whose value you want to set.</p></dd>\n<dt><em>ivar</em></dt>\n<dd><p>The Ivar describing the instance variable whose value you want to set.</p></dd>\n<dt><em>value</em></dt>\n<dd><p>The new value for the instance variable.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "object",
+        "description": "The object containing the instance variable whose value you want to set.",
+        "type": "id"
+      },
+      {
+        "name": "ivar",
+        "description": "The Ivar describing the instance variable whose value you want to set.",
+        "type": "Ivar"
+      },
+      {
+        "name": "value",
+        "description": "The new value for the instance variable.",
+        "type": "id"
+      }
+    ],
+    "api_discussion": "Discussionobject_setIvar is faster than object_setInstanceVariable if the Ivar for the instance variable is already known.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code>object_setIvar</code> is faster than <code><a href=\"#//apple_ref/c/func/object_setInstanceVariable\">object_setInstanceVariable</a></code> if the Ivar for the instance variable is already known.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "property_getAttributes",
+    "abstract": "Returns the attribute string of an property.\n",
+    "declaration": "const char *property_getAttributes(objc_property_t property)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char *property_getAttributes(objc_property_t property)\n</pre>\n",
+    "return_value": "Return ValueA C string containing the property's attributes.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string containing the property's attributes.</p>\n</div>",
+    "api_discussion": "DiscussionThe format of the attribute string is described in “Declared Properties” in Objective-C Runtime Programming Guide.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>The format of the attribute string is described in <span class=\"content_text\"><a href=\"../../../Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html#//apple_ref/doc/uid/TP40008048-CH101\" target=\"_self\">“Declared Properties”</a></span> in <em><a href=\"../../../Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008048\" target=\"_self\">Objective-C Runtime Programming Guide</a></em>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "property_getName",
+    "abstract": "Returns the name of a property.",
+    "declaration": "const char *property_getName(objc_property_t property)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char *property_getName(objc_property_t property)\n</pre>\n",
+    "return_value": "Return ValueA C string containing the property's name.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string containing the property's name.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_conformsToProtocol",
+    "abstract": "Returns a Boolean value that indicates whether one protocol conforms to another protocol.",
+    "declaration": "BOOL protocol_conformsToProtocol(Protocol *proto, Protocol *other)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL protocol_conformsToProtocol(Protocol *proto, Protocol *other)\n</pre>\n",
+    "api_parameters": "ParametersprotoA protocol.otherA protocol.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>proto</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>other</em></dt>\n<dd><p>A protocol.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "proto",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "other",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      }
+    ],
+    "return_value": "Return ValueYES if proto conforms to other, otherwise NO.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if <em>proto</em> conforms to <em>other</em>, otherwise <code>NO</code>.</p>\n</div>",
+    "api_discussion": "DiscussionOne protocol can incorporate other protocols using the same syntax that classes use to adopt a protocol:@protocol ProtocolName < protocol list >All the protocols listed between angle brackets are considered part of the ProtocolName protocol. ",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>One protocol can incorporate other protocols using the same syntax that classes use to adopt a protocol:</p>\n<div class=\"codesample clear\"><table><tr><td scope=\"row\"><pre>@protocol ProtocolName &lt; protocol list &gt;<span></span></pre></td></tr></table></div>\n<p>All the protocols listed between angle brackets are considered part of the ProtocolName protocol. </p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_copyMethodDescriptionList",
+    "abstract": "Returns an array of method descriptions of methods meeting a given specification for a given protocol.",
+    "declaration": "struct objc_method_description *protocol_copyMethodDescriptionList(Protocol *p, BOOL isRequiredMethod, BOOL isInstanceMethod, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nstruct objc_method_description *protocol_copyMethodDescriptionList(Protocol *p, BOOL isRequiredMethod, BOOL isInstanceMethod, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParameterspA protocol.isRequiredMethodA Boolean value that indicates whether returned methods should be required methods (pass YES to specify required methods).isInstanceMethodA Boolean value that indicates whether returned methods should be instance methods (pass YES to specify instance methods).outCountUpon return, contains the number of method description structures in the returned array.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>p</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>isRequiredMethod</em></dt>\n<dd><p>A Boolean value that indicates whether returned methods should be required methods (pass <code>YES</code> to specify required methods).</p></dd>\n<dt><em>isInstanceMethod</em></dt>\n<dd><p>A Boolean value that indicates whether returned methods should be instance methods (pass <code>YES</code> to specify instance methods).</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>Upon return, contains the number of method description structures in the returned array.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "p",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "isRequiredMethod",
+        "description": "A Boolean value that indicates whether returned methods should be required methods (pass YES to specify required methods).",
+        "type": "BOOL"
+      },
+      {
+        "name": "isInstanceMethod",
+        "description": "A Boolean value that indicates whether returned methods should be instance methods (pass YES to specify instance methods).",
+        "type": "BOOL"
+      },
+      {
+        "name": "outCount",
+        "description": "Upon return, contains the number of method description structures in the returned array.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueA C array of objc_method_description structures containing the names and types of p’s methods specified by isRequiredMethod and isInstanceMethod. The array contains *outCount pointers followed by a NULL terminator. You must free the list with free().If the protocol declares no methods that meet the specification, NULL is returned and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C array of <code>objc_method_description</code> structures containing the names and types of <em>p</em>’s methods specified by <em>isRequiredMethod</em> and <em>isInstanceMethod</em>. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the list with <code>free()</code>.</p>\n<p>If the protocol declares no methods that meet the specification, <code>NULL</code> is returned and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_discussion": "DiscussionMethods in other protocols adopted by this protocol are not included. ",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>Methods in other protocols adopted by this protocol are not included. </p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_copyPropertyList",
+    "abstract": "Returns an array of the properties declared by a protocol.",
+    "declaration": "objc_property_t * protocol_copyPropertyList(Protocol *protocol, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nobjc_property_t * protocol_copyPropertyList(Protocol *protocol, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersprotoA protocol.outCountUpon return, contains the number of elements in the returned array.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>proto</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>Upon return, contains the number of elements in the returned array.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "proto",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "outCount",
+        "description": "Upon return, contains the number of elements in the returned array.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueA C array of pointers of type objc_property_t describing the properties declared by proto. Any properties declared by other protocols adopted by this protocol are not included. The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().If the protocol declares no properties, NULL is returned and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C array of pointers of type <code>objc_property_t</code> describing the properties declared by <em>proto</em>. Any properties declared by other protocols adopted by this protocol are not included. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the array with <code>free()</code>.</p>\n<p>If the protocol declares no properties, <code>NULL</code> is returned and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_copyProtocolList",
+    "abstract": "Returns an array of the protocols adopted by a protocol.",
+    "declaration": "Protocol **protocol_copyProtocolList(Protocol *proto, unsigned int *outCount)",
+    "declaration_xml": "<pre class=\"declaration\">\nProtocol **protocol_copyProtocolList(Protocol *proto, unsigned int *outCount)\n</pre>\n",
+    "api_parameters": "ParametersprotoA protocol.outCountUpon return, contains the number of elements in the returned array.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>proto</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>outCount</em></dt>\n<dd><p>Upon return, contains the number of elements in the returned array.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "proto",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "outCount",
+        "description": "Upon return, contains the number of elements in the returned array.",
+        "type": "unsigned int *"
+      }
+    ],
+    "return_value": "Return ValueA C array of protocols adopted by proto. The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().If the protocol declares no properties, NULL is returned and *outCount is 0.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C array of protocols adopted by <em>proto</em>. The array contains <code>*outCount</code> pointers followed by a <code>NULL</code> terminator. You must free the array with <code>free()</code>.</p>\n<p>If the protocol declares no properties, <code>NULL</code> is returned and <code>*outCount</code> is <code>0</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_getMethodDescription",
+    "abstract": "Returns a method description structure for a specified method of a given protocol.",
+    "declaration": "struct objc_method_description protocol_getMethodDescription(Protocol *p, SEL aSel, BOOL isRequiredMethod, BOOL isInstanceMethod)",
+    "declaration_xml": "<pre class=\"declaration\">\nstruct objc_method_description protocol_getMethodDescription(Protocol *p, SEL aSel, BOOL isRequiredMethod, BOOL isInstanceMethod)\n</pre>\n",
+    "api_parameters": "ParameterspA protocol.aSelA selectorisRequiredMethodA Boolean value that indicates whether aSel is a required method.isInstanceMethodA Boolean value that indicates whether aSel is an instance method.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>p</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>aSel</em></dt>\n<dd><p>A selector</p></dd>\n<dt><em>isRequiredMethod</em></dt>\n<dd><p>A Boolean value that indicates whether <em>aSel</em> is a required method.</p></dd>\n<dt><em>isInstanceMethod</em></dt>\n<dd><p>A Boolean value that indicates whether <em>aSel</em> is an instance method.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "p",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "aSel",
+        "description": "A selector",
+        "type": "SEL"
+      },
+      {
+        "name": "isRequiredMethod",
+        "description": "A Boolean value that indicates whether aSel is a required method.",
+        "type": "BOOL"
+      },
+      {
+        "name": "isInstanceMethod",
+        "description": "A Boolean value that indicates whether aSel is an instance method.",
+        "type": "BOOL"
+      }
+    ],
+    "return_value": "Return ValueAn objc_method_description structure that describes the method specified by aSel, isRequiredMethod, and isInstanceMethod for the protocol p.If the protocol does not contain the specified method, returns an objc_method_description structure with the value {NULL, NULL}.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>An <code>objc_method_description</code> structure that describes the method specified by <em>aSel</em>, <em>isRequiredMethod</em>, and <em>isInstanceMethod</em> for the protocol <em>p</em>.</p>\n<p>If the protocol does not contain the specified method, returns an <code>objc_method_description</code> structure with the value <code>{NULL, NULL}</code>.</p>\n</div>",
+    "api_discussion": "DiscussionMethods in other protocols adopted by this protocol are not included. ",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>Methods in other protocols adopted by this protocol are not included. </p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_getName",
+    "abstract": "Returns a the name of a protocol.",
+    "declaration": "const char *protocol_getName(Protocol *p)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char *protocol_getName(Protocol *p)\n</pre>\n",
+    "api_parameters": "ParameterspA protocol.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>p</em></dt>\n<dd><p>A protocol.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "p",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      }
+    ],
+    "return_value": "Return ValueThe name of the protocol p as a C string.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The name of the protocol <em>p</em> as a C string.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_getProperty",
+    "abstract": "Returns the specified property of a given protocol.",
+    "declaration": "objc_property_t protocol_getProperty(Protocol *proto, const char *name, BOOL isRequiredProperty, BOOL isInstanceProperty)",
+    "declaration_xml": "<pre class=\"declaration\">\nobjc_property_t protocol_getProperty(Protocol *proto, const char *name, BOOL isRequiredProperty, BOOL isInstanceProperty)\n</pre>\n",
+    "api_parameters": "ParametersprotoA protocol.nameThe name of a property.isRequiredPropertyA Boolean value that indicates whether name is a required property.isInstancePropertyA Boolean value that indicates whether name is a required property.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>proto</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>name</em></dt>\n<dd><p>The name of a property.</p></dd>\n<dt><em>isRequiredProperty</em></dt>\n<dd><p>A Boolean value that indicates whether <em>name</em> is a required property.</p></dd>\n<dt><em>isInstanceProperty</em></dt>\n<dd><p>A Boolean value that indicates whether <em>name</em> is a required property.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "proto",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "name",
+        "description": "The name of a property.",
+        "type": "const char *"
+      },
+      {
+        "name": "isRequiredProperty",
+        "description": "A Boolean value that indicates whether name is a required property.",
+        "type": "BOOL"
+      },
+      {
+        "name": "isInstanceProperty",
+        "description": "A Boolean value that indicates whether name is a required property.",
+        "type": "BOOL"
+      }
+    ],
+    "return_value": "Return ValueThe property specified by name, isRequiredProperty, and isInstanceProperty for proto, or NULL if none of proto’s properties meets the specification.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>The property specified by <em>name</em>, <em>isRequiredProperty</em>, and <em>isInstanceProperty</em> for <em>proto</em>, or <code>NULL</code> if none of <em>proto</em>’s properties meets the specification.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "protocol_isEqual",
+    "abstract": "Returns a Boolean value that indicates whether two protocols are equal.",
+    "declaration": "BOOL protocol_isEqual(Protocol *proto, Protocol *other)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL protocol_isEqual(Protocol *proto, Protocol *other)\n</pre>\n",
+    "api_parameters": "ParametersprotoA protocol.otherA protocol.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>proto</em></dt>\n<dd><p>A protocol.</p></dd>\n<dt><em>other</em></dt>\n<dd><p>A protocol.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "proto",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      },
+      {
+        "name": "other",
+        "description": "A protocol.",
+        "type": "Protocol *"
+      }
+    ],
+    "return_value": "Return ValueYES if proto is the same as other, otherwise NO.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if <em>proto</em> is the same as <em>other</em>, otherwise <code>NO</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "sel_getName",
+    "abstract": "Returns the name of the method specified by a given selector.",
+    "declaration": "const char* sel_getName(SEL aSelector)",
+    "declaration_xml": "<pre class=\"declaration\">\nconst char* sel_getName(SEL aSelector)\n</pre>\n",
+    "api_parameters": "ParametersaSelectorA pointer of type SEL. Pass the selector whose name you wish to determine.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>aSelector</em></dt>\n<dd><p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code>. Pass the selector whose name you wish to determine.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "aSelector",
+        "description": "A pointer of type SEL. Pass the selector whose name you wish to determine.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueA C string indicating the name of the selector.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A C string indicating the name of the selector.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/objc.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/objc.h</code>\n</div>\n"
+  },
+  {
+    "name": "sel_getUid",
+    "abstract": "Registers a method name with the Objective-C runtime system.",
+    "declaration": "SEL sel_getUid(const char *str)",
+    "declaration_xml": "<pre class=\"declaration\">\nSEL sel_getUid(const char *str)\n</pre>\n",
+    "api_parameters": "ParametersstrA pointer to a C string. Pass the name of the method you wish to register.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>str</em></dt>\n<dd><p>A pointer to a C string. Pass the name of the method you wish to register.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "str",
+        "description": "A pointer to a C string. Pass the name of the method you wish to register.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueA pointer of type SEL specifying the selector for the named method.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code> specifying the selector for the named method.</p>\n</div>",
+    "api_discussion": "DiscussionThe implementation of this method is identical to the implementation of sel_registerName.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>The implementation of this method is identical to the implementation of <code><a href=\"#//apple_ref/c/func/sel_registerName\">sel_registerName</a></code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/objc.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/objc.h</code>\n</div>\n"
+  },
+  {
+    "name": "sel_isEqual",
+    "abstract": "Returns a Boolean value that indicates whether two selectors are equal.",
+    "declaration": "BOOL sel_isEqual(SEL lhs, SEL rhs)",
+    "declaration_xml": "<pre class=\"declaration\">\nBOOL sel_isEqual(SEL lhs, SEL rhs)\n</pre>\n",
+    "api_parameters": "ParameterslhsThe selector to compare with rhs.rhsThe selector to compare with lhs.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>lhs</em></dt>\n<dd><p>The selector to compare with <em>rhs</em>.</p></dd>\n<dt><em>rhs</em></dt>\n<dd><p>The selector to compare with <em>lhs</em>.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "lhs",
+        "description": "The selector to compare with rhs.",
+        "type": "SEL"
+      },
+      {
+        "name": "rhs",
+        "description": "The selector to compare with lhs.",
+        "type": "SEL"
+      }
+    ],
+    "return_value": "Return ValueYES if rhs and rhs are equal, otherwise NO.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p><code>YES</code> if <em>rhs</em> and <em>rhs</em> are equal, otherwise <code>NO</code>.</p>\n</div>",
+    "api_discussion": "Discussionsel_isEqual is equivalent to ==.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p><code>sel_isEqual</code> is equivalent to <code>==</code>.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>\n"
+  },
+  {
+    "name": "sel_registerName",
+    "abstract": "Registers a method with the Objective-C runtime system, maps the method name to a selector, and returns the selector value.",
+    "declaration": "SEL sel_registerName(const char *str)",
+    "declaration_xml": "<pre class=\"declaration\">\nSEL sel_registerName(const char *str)\n</pre>\n",
+    "api_parameters": "ParametersstrA pointer to a C string. Pass the name of the method you wish to register.",
+    "api_parameters_xml": "<div class=\"api parameters\">\n<h5>Parameters</h5>\n<dl class=\"termdef\">\n<dt><em>str</em></dt>\n<dd><p>A pointer to a C string. Pass the name of the method you wish to register.</p></dd>\n</dl>\n</div>\n",
+    "parameters": [
+      {
+        "name": "str",
+        "description": "A pointer to a C string. Pass the name of the method you wish to register.",
+        "type": "const char *"
+      }
+    ],
+    "return_value": "Return ValueA pointer of type SEL specifying the selector for the named method.",
+    "return_value_xml": "<div class=\"return_value\">\n<h5 class=\"tight\">Return Value</h5>\n<p>A pointer of type <code><a href=\"#//apple_ref/c/tdef/SEL\">SEL</a></code> specifying the selector for the named method.</p>\n</div>",
+    "api_discussion": "DiscussionYou must register a method name with the Objective-C runtime system to obtain the method’s selector before you can add the method to a class definition. If the method name has already been registered, this function simply returns the selector.",
+    "api_discussion_xml": "<div class=\"api discussion\">\n<h5>Discussion</h5>\n<p>You must register a method name with the Objective-C runtime system to obtain the method’s selector before you can add the method to a class definition. If the method name has already been registered, this function simply returns the selector.</p>\n</div>",
+    "api_availability": "AvailabilityAvailable in iOS 2.0 and later.",
+    "api_availability_xml": "<div class=\"api availability\">\n<h5>Availability</h5>\n<ul><li>Available in iOS 2.0 and later.</li></ul>\n</div>\n",
+    "api_declaration": "Declared Inobjc/runtime.h",
+    "api_declaration_xml": "<div class=\"api declaredIn\">\n<h5>Declared In</h5>\n<code class=\"HeaderFile\">objc/runtime.h</code>\n</div>"
+  }
+]

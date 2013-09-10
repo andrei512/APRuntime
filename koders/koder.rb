@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/task.rb'
+
 class Koder 
 	attr_accessor :hash
 
@@ -43,8 +45,8 @@ class Koder
 
 end
 
-koder = Koder.koder_with({})
+# koder = Koder.koder_with({})
 
-puts koder
+# puts koder
 
-koder << {}
+# koder << {}

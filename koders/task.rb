@@ -7,8 +7,9 @@ class Task
 		kode = []
 	end
 
-	def << action
-		if type = action[:type] 
+	def << action				
+		if action.is_a? Hash 
+			type = action[:type]  
 			if type == :charge
 				charge << action
 			elsif type == :process
@@ -18,6 +19,8 @@ class Task
 			elsif type == :subtask 
 				subtasks << action
 			end
+		elsif action.is_a? Task
+			subtask << Task.subtask(action)
 		end
 	end
 
@@ -104,5 +107,36 @@ Process.createFile("foo.txt")
 Process.createFilesFromList(["foo.txt", "bar.txt"])
 
 Process.appendStringToFile("ana are mere.", "foo.txt")
+
+# Chargers - loaders, interactions and APIs
+copies the in folder in the processing folder
+
+- load media (from local storage, url, dropbox)
+- load templates
+- load json, csv, xml, css, etc. for processing and code generation
+
+* open - opens a file/url and returns a string
+* csv - opens a csv file and returns the serialized csv
+* json - opens a json file and return the contained object
+* xml - opens a file and return nokogiri document
+* parse json to key
+
+# Processing
+works with processing folder
+
+- using ruby to generate code
+- using bash for processing
+- Objective-c Abstract Syntaxt Tree
+- 
+
+* key management
+* runing a script
+* rake
+* objc AST - simple version based on templates
+
+
+# Koding - aka rendering templates and manipulatingd xcodeproj/xcworkspace
+creates out folder based on processing folder
+
 
 

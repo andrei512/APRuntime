@@ -1,0 +1,1369 @@
+{
+   "enums" : null,
+   "models" : {
+      "Common::Agent" : {
+         "blogs_count" : {
+            "documentation" : "The blogs number of the agent",
+            "type" : "Int"
+         },
+         "brokerage" : {
+            "documentation" : "Basic information about brokerage such as company name, address, phone,\nlogo and url",
+            "of" : "Item",
+            "type" : "Object"
+         },
+         "can_use_email" : {
+            "documentation" : "Flag, if 1 then the agent's email is a valid one",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "email" : {
+            "documentation" : "The email of the agent",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "id" : {
+            "documentation" : "Unique identifier of an agent",
+            "type" : "Int"
+         },
+         "is_featured" : {
+            "documentation" : "Flag, when set to 1 means that the agent is a featured one",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "is_point2_agent" : {
+            "documentation" : "Flag. If set to 1 means that the agent is a point2 agent.",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "listings" : {
+            "documentation" : "Active listings that have as agent the current agent",
+            "of" : {
+               "of" : "Common::ListingInfo",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "listings_count" : {
+            "documentation" : "The number of active listings belonging to this agent",
+            "type" : "Int"
+         },
+         "name" : {
+            "documentation" : "The name of the agent",
+            "type" : "Str"
+         },
+         "phones" : {
+            "documentation" : "A list of agent's phones, like personal phone, office phone and fax",
+            "of" : "Item",
+            "type" : "Object"
+         },
+         "photo_id" : {
+            "documentation" : "Unique identifier of an agent's photo",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "point2_profile_url" : {
+            "documentation" : "URL with the profile of the agent from Point2 agent application",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "website" : {
+            "documentation" : "The agent's website's url",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::AgentPhones" : {
+         "fax" : {
+            "documentation" : "The fax number of the agent",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "office" : {
+            "documentation" : "The office phone number of the agent",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "personal" : {
+            "documentation" : "The personal phone number of the agent",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::Attachment" : {
+         "link_text" : {
+            "default" : "View Attachment",
+            "documentation" : "String. Used as text for the url, eg. _\"View Attachment\"_ or _\"View Listing\nBrochure\"_. If the field is not populated, the default value is _\"View\nAttachment\"_.",
+            "type" : "Str"
+         },
+         "url" : {
+            "documentation" : "String. The attachment url.",
+            "type" : "Str"
+         }
+      },
+      "Common::Brokerage" : {
+         "address" : {
+            "documentation" : "The company's address",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "logo_url" : {
+            "documentation" : "URL containing the company's logo",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "name" : {
+            "documentation" : "The company's name",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "phone" : {
+            "documentation" : "The company's phone number",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "url" : {
+            "documentation" : "The company's website url",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::Centroid" : {
+         "lat" : {
+            "documentation" : "The latitude of the centroid",
+            "type" : "Num"
+         },
+         "long" : {
+            "documentation" : "The longitude of the centroid",
+            "type" : "Num"
+         }
+      },
+      "Common::Error" : {
+         "code" : {
+            "documentation" : "The error code",
+            "type" : "Int"
+         },
+         "message" : {
+            "documentation" : "The error message",
+            "type" : "Str"
+         }
+      },
+      "Common::GeoLocation" : {
+         "accuracy" : {
+            "documentation" : "If the accuracy is returned by the google_location then the values for this\nattribute will be _approximate_ or _precise_ else the accuracy is _precise_",
+            "type" : "Str"
+         },
+         "cx" : {
+            "documentation" : "The x coordinate of the location",
+            "type" : "Num"
+         },
+         "cy" : {
+            "documentation" : "The y coordinate of the location",
+            "type" : "Num"
+         },
+         "geo_id" : {
+            "documentation" : "Unique identifier of a geo region",
+            "type" : "Int"
+         },
+         "pretty_name" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "viewport" : {
+            "documentation" : "The viewport of the location",
+            "is_nullable" : 1,
+            "of" : "Common::Viewport",
+            "type" : "Object"
+         }
+      },
+      "Common::Listing" : {
+         "agents" : {
+            "documentation" : "The list of the agents",
+            "of" : {
+               "of" : "Common::Agent",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "attachments" : {
+            "documentation" : "These are some external links to a point2 email form. Sending this email,\nthe user requests some documents from the listing agent. Array. Optional.",
+            "of" : "Item",
+            "type" : "Object"
+         },
+         "centroid" : {
+            "documentation" : "The listing's geographical ( latitude, longitude ) coordinates",
+            "of" : "Item",
+            "type" : "Object"
+         },
+         "created" : {
+            "documentation" : "Date of first time import of the listing",
+            "type" : "Date"
+         },
+         "currency" : {
+            "documentation" : "The price currency eq. _CAD_, _USD_",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "description" : {
+            "documentation" : "The listing's description",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "floorplans" : {
+            "documentation" : "The listing's floorplans. A list of strings. Optional.",
+            "is_nullable" : 1,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "id" : {
+            "documentation" : "Unique identifier of a listing",
+            "type" : "Int"
+         },
+         "imported" : {
+            "documentation" : "Date of last update on listings",
+            "type" : "Date"
+         },
+         "is_crea" : {
+            "documentation" : "Flag, when is set to 1 listing is from the Canadian Real Estate Association",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "is_featured" : {
+            "documentation" : "Flag, when set to 1 means that the listing is a featured one",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "mls_certified" : {
+            "documentation" : "Flag, when is set to 1 the listing is MLS certified",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "mls_number" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "on_p2h" : {
+            "documentation" : "Represents the number of days since the listing is on point2homes",
+            "type" : "Str"
+         },
+         "open_house_date" : {
+            "documentation" : "The most recent open house date",
+            "is_nullable" : 1,
+            "type" : "Date"
+         },
+         "open_house_time" : {
+            "documentation" : "The hours interva for open house date",
+            "of" : "Item",
+            "type" : "Object"
+         },
+         "photos" : {
+            "documentation" : "Represents a list of photo patterns(STRING). A functional photo url can be\nobtained by concatenating the photo pattern with the desired size like this\nPATTERN_SIZE. The valid sizes are: _thumb_, _x_small_, _small_, _medium_\nand _large_. Example:\nhttp://www.propertyshark.com/rfs_image_photo_188956622_small",
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "point2_id" : {
+            "documentation" : "The listing's unique identifier in Point2's system",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "price" : {
+            "documentation" : "The price of the listing",
+            "type" : "Num"
+         },
+         "price_history" : {
+            "documentation" : "The listing's price history",
+            "of" : {
+               "of" : "Common::PriceHistory",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "property_info" : {
+            "documentation" : "Information about the property",
+            "of" : "Common::PropertyInfo",
+            "type" : "Object"
+         },
+         "seller_comment" : {
+            "documentation" : "Represents a text manually entered by the seller for a few number of\nlistings. String. Optional.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "status" : {
+            "documentation" : "String describing the status of the listing (i.e. 'ForSale', 'ForRent',\n'Rented', 'Sold', 'Foreclosure' etc.)",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "web_bug_url" : {
+            "documentation" : "URL which must be added on the detail page for tracking purposes (tracking\npixel, could be included as image source)",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::ListingInfo" : {
+         "address" : {
+            "documentation" : "Listing's address with street and location",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "created" : {
+            "documentation" : "Date of first time import of the listing",
+            "type" : "Date"
+         },
+         "description" : {
+            "documentation" : "Description of the listing",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "id" : {
+            "documentation" : "Unique identifier of a listing",
+            "type" : "Int"
+         },
+         "imported" : {
+            "documentation" : "Date of last update on listings",
+            "type" : "Date"
+         },
+         "mls_certified" : {
+            "documentation" : "Flag, when is set to 1 the listing is MLS certified",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "price" : {
+            "documentation" : "The price of the listing",
+            "type" : "Num"
+         },
+         "status" : {
+            "documentation" : "String describing the status of the listing (i.e. 'ForSale', 'ForRent',\n'Rented', 'Sold', 'Foreclosure' etc.)",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::Location" : {
+         "address" : {
+            "documentation" : "Address of the property",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "city" : {
+            "documentation" : "Name of the city that the property belongs to",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "country" : {
+            "documentation" : "Name of the country that the property belongs to",
+            "type" : "Str"
+         },
+         "county" : {
+            "documentation" : "Name of the county that the property belongs to",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "elementary_school_district" : {
+            "documentation" : "Property’s elementary school",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "full_address" : {
+            "documentation" : "Property's address with street and location",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "high_school_district" : {
+            "documentation" : "Property’s high school",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "neighborhood" : {
+            "documentation" : "Neighborhood of the property",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "state" : {
+            "documentation" : "Name of the state that the property belongs to",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "unified_school_district" : {
+            "documentation" : "Property's elementary and high school",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "zipcode" : {
+            "documentation" : "Name of the zipcode",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::OpenHouseTime" : {
+         "end_time" : {
+            "documentation" : "Hour(:minutes)(AM/PM) when the house closes. Format: 99(:99)(AM/PM)",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "extra_info" : {
+            "documentation" : "Up to 255 characters. Could specify additional info (appointment, host,\ndays of week ) related to the event.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "start_time" : {
+            "documentation" : "Hour(:minutes)(AM/PM) when the house opens. Format: 99(:99)(AM/PM)",
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::PriceHistory" : {
+         "created" : {
+            "documentation" : "Date when this price appeared",
+            "type" : "Date"
+         },
+         "price" : {
+            "documentation" : "The price of the listing",
+            "type" : "Num"
+         },
+         "price_per_sqft" : {
+            "documentation" : "The price per square foot",
+            "type" : "Num"
+         }
+      },
+      "Common::PropertyInfo" : {
+         "apartament_features" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "bathrooms" : {
+            "documentation" : "The no. of bathrooms",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "bedrooms" : {
+            "documentation" : "The no. of bedrooms",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "building_features" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "building_name" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "building_stories" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "building_type" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "depth" : {
+            "documentation" : "The depth of the property",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "frontage" : {
+            "documentation" : "The frontage of the property",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "location" : {
+            "documentation" : "The location information of the property",
+            "of" : "Common::Location",
+            "type" : "Object"
+         },
+         "lot_size" : {
+            "documentation" : "The lot size",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "market_value" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "no_of_units" : {
+            "documentation" : "The no. of units",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "property_type" : {
+            "documentation" : "The type of the property eg. _Residential_, _Single family_ ...",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "property_type_sub_class" : {
+            "documentation" : "Standardized sub-class of the property. String. Optional",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "propkey" : {
+            "documentation" : "Unique identifier of a property",
+            "type" : "Int"
+         },
+         "rooms" : {
+            "documentation" : "The no. of rooms",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "sqft" : {
+            "documentation" : "The area of the property, in square foot",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "tax_amount" : {
+            "documentation" : "Represents the tax amount that the current owner pays considering\nexemptions or any special charges.",
+            "is_nullable" : 1,
+            "type" : "Num"
+         },
+         "year_built" : {
+            "documentation" : "The year when the property was built",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "zoning" : {
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         }
+      },
+      "Common::Timer" : {
+         "description" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "elapsed_time" : {
+            "documentation" : null,
+            "type" : "Num"
+         },
+         "name" : {
+            "documentation" : null,
+            "type" : "Str"
+         }
+      },
+      "Common::Viewport" : {
+         "max_lat" : {
+            "documentation" : "The maximum latitude",
+            "type" : "Num"
+         },
+         "max_long" : {
+            "documentation" : "The maximum longitude",
+            "type" : "Num"
+         },
+         "min_lat" : {
+            "documentation" : "The minimum latitude",
+            "type" : "Num"
+         },
+         "min_long" : {
+            "documentation" : "The minimum longitude",
+            "type" : "Num"
+         }
+      },
+      "Criteria::Criterion" : {
+         "column" : {
+            "documentation" : "The name of the column that the criterion is aplied on",
+            "type" : "Str"
+         },
+         "gt" : {
+            "documentation" : "the **> (grater then) operator",
+            "type" : "Value"
+         },
+         "gte" : {
+            "documentation" : "the **=> (grater then or equal) operator",
+            "type" : "Value"
+         },
+         "is" : {
+            "documentation" : "The *=* (is) operator",
+            "type" : "Value"
+         },
+         "lt" : {
+            "documentation" : "the *<* (lower then) operator",
+            "type" : "Value"
+         },
+         "lte" : {
+            "documentation" : "the *<=* (lower then or equal) operator",
+            "type" : "Value"
+         },
+         "range" : {
+            "documentation" : "The range operator",
+            "type" : "Value"
+         },
+         "regex" : {
+            "documentation" : "The regex operator",
+            "type" : "Str"
+         }
+      },
+      "Criteria::PsharkCriterion" : {
+         "field" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "value" : {
+            "documentation" : null,
+            "type" : "Value"
+         }
+      },
+      "Input::Agents::Search::ByAgentIds" : {
+         "agent_ids" : {
+            "documentation" : "List of unique identifiers of agents. Required.",
+            "of" : {
+               "type" : "Int"
+            },
+            "type" : "Array"
+         },
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Agents::Search::ByGeoId" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "geo_id" : {
+            "documentation" : "Unique identifier of a geographical location. Required",
+            "of" : {
+               "type" : "Int"
+            },
+            "type" : "Array"
+         },
+         "page" : {
+            "default" : 1,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "page_size" : {
+            "default" : 10,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "sort" : {
+            "documentation" : null,
+            "type" : "HashRef"
+         },
+         "where" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Criteria::Criterion",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Agents::SendEmail" : {
+         "agent_id" : {
+            "documentation" : "The agent's unique ID. Required.",
+            "type" : "Int"
+         },
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "content" : {
+            "documentation" : "Message content. Required.",
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "email_lead_generation" : {
+            "documentation" : "Used to generate lead for the listings. Emails are sent to this email as\nwell for tracking purposes. This attribute does not needs to be sent to the\nservice's call, because it will be automatically set when\n_point2_listing_id_ attribute is sent.",
+            "type" : "Str"
+         },
+         "first_name" : {
+            "documentation" : "The sender's first name. This field is not part of the input model. It is\nset by parsing the _sender_name_ field.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "from_agents" : {
+            "documentation" : "Flag. If is set to 1 then the email was sent from an agent's page otherwise\nthe email was sent from a listing page",
+            "type" : "Bool"
+         },
+         "host_address" : {
+            "documentation" : "The host address used for tracking. Required in Point2's tracking service.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "host_name" : {
+            "documentation" : "The host name used for tracking. Required in Point2's tracking service.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "is_point2_agent" : {
+            "documentation" : "Flag. If is set to 1 then the sender is form Point2. Optional.",
+            "type" : "Bool"
+         },
+         "last_name" : {
+            "documentation" : "The sender's last name. This field is not part of the input model. It is\nset by parsing the _sender_name_ field.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "point2_listing_id" : {
+            "documentation" : "If the message is sent from a listing, this field must be set to the\ncorresponding point2_listing_id which exists only for point2 listings",
+            "is_nullable" : 1,
+            "type" : "Int"
+         },
+         "requested_showing_date" : {
+            "documentation" : "The requested showing date in YYYY-MM-DD format. Optional.",
+            "is_nullable" : 1,
+            "type" : "Date"
+         },
+         "sender_email" : {
+            "documentation" : "The sender's email address. Required.",
+            "type" : "Str"
+         },
+         "sender_name" : {
+            "documentation" : "The sender's full name. Format: [firstName [middleName] lastName].\nOptional.",
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "subject" : {
+            "documentation" : "Message subject. Required.",
+            "type" : "Str"
+         }
+      },
+      "Input::AppConfig::GetVersion" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         }
+      },
+      "Input::AppConfig::SetVersion" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "version" : {
+            "documentation" : "version number - Int",
+            "type" : "Num"
+         }
+      },
+      "Input::Data" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : "Optional input argument that request extra information to be included eg.\n_total_count_ on listings services or _blogs_count_ on agents services",
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Listings::Search::ByGeoId" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "geo_id" : {
+            "documentation" : "Unique identifier for PropertyShark's geo locations (US only)",
+            "of" : {
+               "type" : "Int"
+            },
+            "type" : "Array"
+         },
+         "page" : {
+            "default" : 1,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "page_size" : {
+            "default" : 10,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "site" : {
+            "default" : "p2h",
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "sort" : {
+            "documentation" : null,
+            "type" : "HashRef"
+         },
+         "target" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "where" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Criteria::Criterion",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Listings::Search::ByListingIds" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "listing_ids" : {
+            "documentation" : "List of unique listing identifiers. Required.",
+            "of" : {
+               "type" : "Int"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Listings::Search::ByRadius" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "country" : {
+            "default" : "US",
+            "documentation" : "Country abbreviation ('US' by default).",
+            "type" : "Str"
+         },
+         "cx" : {
+            "documentation" : "The x coordinate. Required.",
+            "type" : "Num"
+         },
+         "cy" : {
+            "documentation" : "The y coordinate. Required.",
+            "type" : "Num"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "page" : {
+            "default" : 1,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "page_size" : {
+            "default" : 10,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "radius" : {
+            "documentation" : "Radius on which the search is made. Required.",
+            "type" : "Num"
+         },
+         "site" : {
+            "default" : "p2h",
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "sort" : {
+            "documentation" : null,
+            "type" : "HashRef"
+         },
+         "target" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "where" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Criteria::Criterion",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Listings::Search::ByViewport" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "country" : {
+            "default" : "US",
+            "documentation" : "Country abbreviation ('US' by default).",
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "page" : {
+            "default" : 1,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "page_size" : {
+            "default" : 10,
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "site" : {
+            "default" : "p2h",
+            "documentation" : null,
+            "is_nullable" : 1,
+            "type" : "Str"
+         },
+         "sort" : {
+            "documentation" : null,
+            "type" : "HashRef"
+         },
+         "target" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "viewport" : {
+            "documentation" : "Viewport on which the search is made. Required.",
+            "of" : "Common::Viewport",
+            "type" : "Object"
+         },
+         "where" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Criteria::Criterion",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      },
+      "Input::Location::Search::ByString" : {
+         "all_matches" : {
+            "documentation" : "If all_matches flag is set than the service will return all locations\nfound, else it will return the first location found",
+            "type" : "Bool"
+         },
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "country" : {
+            "default" : "US",
+            "documentation" : "Country abbreviation ('US' by default).",
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "location_string" : {
+            "documentation" : "String identifying a geographical location. Required.",
+            "type" : "Str"
+         }
+      },
+      "Input::Search" : {
+         "api_key" : {
+            "documentation" : null,
+            "type" : "Str"
+         },
+         "debug" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "extra_data" : {
+            "documentation" : null,
+            "of" : {
+               "type" : "Str"
+            },
+            "type" : "Array"
+         },
+         "page" : {
+            "default" : 1,
+            "documentation" : "The current page number. Default value: 1.",
+            "type" : "Int"
+         },
+         "page_size" : {
+            "default" : 10,
+            "documentation" : "The number of results on the current page. Default value: 10.",
+            "type" : "Int"
+         },
+         "sort" : {
+            "documentation" : "Standard sort definition. The \"sort\" column will contain a list of sortable\ncolumns and sort types",
+            "type" : "HashRef"
+         },
+         "where" : {
+            "documentation" : "Standard query definition. The _where_ key will contain a list of columns\nand operators. Available services that use this standard query definition\nare presented in Criterion model's documentation.",
+            "of" : {
+               "of" : "Criteria::Criterion",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      },
+      "Output::Agents::Search::ByAgentIds" : {
+         "agents" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Agent",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      },
+      "Output::Agents::Search::ByGeoId" : {
+         "agents" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Agent",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "total_count" : {
+            "documentation" : "Total number of agents found based on the given search criteria",
+            "is_nullable" : 1,
+            "type" : "Int"
+         }
+      },
+      "Output::Agents::SendEmail" : {
+         "error" : {
+            "documentation" : "Error code and message if status was _failure_",
+            "of" : "Item",
+            "type" : "Object"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "status" : {
+            "documentation" : "Status message: _success_ or _failure_",
+            "type" : "Str"
+         }
+      },
+      "Output::Listings::Search::ByGeoId" : {
+         "listings" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Listing",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "total_count" : {
+            "documentation" : null,
+            "type" : "Int"
+         }
+      },
+      "Output::Listings::Search::ByListingIds" : {
+         "listings" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Listing",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "total_count" : {
+            "documentation" : null,
+            "type" : "Int"
+         }
+      },
+      "Output::Listings::Search::ByRadius" : {
+         "listings" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Listing",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "total_count" : {
+            "documentation" : null,
+            "type" : "Int"
+         }
+      },
+      "Output::Listings::Search::ByViewport" : {
+         "listings" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Listing",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "total_count" : {
+            "documentation" : null,
+            "type" : "Int"
+         }
+      },
+      "Output::Location::Search::ByString" : {
+         "count" : {
+            "documentation" : null,
+            "type" : "Int"
+         },
+         "locations" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::GeoLocation",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "query_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         },
+         "service_timers" : {
+            "documentation" : null,
+            "of" : {
+               "of" : "Common::Timer",
+               "type" : "Object"
+            },
+            "type" : "Array"
+         }
+      }
+   },
+   "services" : {
+      "agents" : {
+         "search_by_agent_ids" : {
+            "documentation" : "Searches for agents by one or more agent ids. An optional input argument is\nthe 'extra_data' list, with which additional data can be requested.\nCurrently the only supported values are: _listings_, _listings_count_",
+            "input_model" : "Input::Agents::Search::ByAgentIds",
+            "output_model" : "Output::Agents::Search::ByAgentIds"
+         },
+         "search_by_geo_id" : {
+            "documentation" : "Searches for agents by one geo_id and a set of search criteria. Search\ncriteria is represented by the 'where' key and supports only 'agent_name'\nand 'brokerage' columns. Both columns will only work with 'is' and 'regex'\noperators. An optional input argument is the 'extra_data' list, with which\nadditional data can be requested. Currently the only supported values are:\n_total_count_, _listings_, _listings_count_, _blogs_count_",
+            "input_model" : "Input::Agents::Search::ByGeoId",
+            "output_model" : "Output::Agents::Search::ByGeoId"
+         },
+         "send_email" : {
+            "documentation" : "This method can be used to send an email to an agent using its *ID*, in\neffect enabling communication from applications that are not allowed to\ndisplay the agent’s email address. A showing can optionally be requested,\nin which case _requested_showing_date_ should contain a date in YYYY-MM-DD\nformat.",
+            "input_model" : "Input::Agents::SendEmail",
+            "output_model" : "Output::Agents::SendEmail"
+         }
+      },
+      "app_config" : {
+         "get_version" : {
+            "documentation" : "Get the version number for the app, that is set using the\napp_config/set_version",
+            "input_model" : "Input::AppConfig::GetVersion",
+            "output_model" : "Output::AppConfig::GetVersion"
+         },
+         "set_version" : {
+            "documentation" : "Sets app version to a specific number.",
+            "input_model" : "Input::AppConfig::SetVersion",
+            "output_model" : "Output::AppConfig::SetVersion"
+         }
+      },
+      "listings" : {
+         "search_by_geo_id" : {
+            "documentation" : "",
+            "input_model" : "Input::Listings::Search::ByGeoId",
+            "output_model" : "Output::Listings::Search::ByGeoId"
+         },
+         "search_by_listing_ids" : {
+            "documentation" : "Searches for listings by one ore more listing id's and a set of search\ncriteria. By default both regular listings and foreclosure listings are\ntargeted but this behavior can be controlled with the target variable. By\ndefault, target = [“listings”, “foreclosures”]. By calling search with\ntarget = [“foreclosures”] for example, you can search for foreclosures\nonly.",
+            "input_model" : "Input::Listings::Search::ByListingIds",
+            "output_model" : "Output::Listings::Search::ByListingIds"
+         },
+         "search_by_radius" : {
+            "documentation" : "Searches listings by one location. A location is represented by _radius_, x\ncoordinate _cx_ and y coordinate _cy_. An optional input argument is the\n'extra_data' list, with which additional data can be requested. Currently\nthe only supported value is: _total_count_.",
+            "input_model" : "Input::Listings::Search::ByRadius",
+            "output_model" : "Output::Listings::Search::ByRadius"
+         },
+         "search_by_viewport" : {
+            "documentation" : "Searches listings by one location. A location is represented by _viewport_,\na rectangle represented by its lower left (min_lat, min_long) and upper\nright (max_lat, max_long) corners. An optional input argument is the\n'extra_data' list, with which additional data can be requested. Currently\nthe only supported value is: _total_count_.",
+            "input_model" : "Input::Listings::Search::ByViewport",
+            "output_model" : "Output::Listings::Search::ByViewport"
+         }
+      },
+      "location" : {
+         "search_by_string" : {
+            "documentation" : "Searches for locations by a given string. By default it will return the\nfirst location found but multiple location can be returned if the\n_all_matches_ flag is set to 1. It will also return the number of all\nlocations found.",
+            "input_model" : "Input::Location::Search::ByString",
+            "output_model" : "Output::Location::Search::ByString"
+         }
+      }
+   }
+}

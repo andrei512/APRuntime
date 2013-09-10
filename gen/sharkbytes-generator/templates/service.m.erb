@@ -1,0 +1,45 @@
+<%
+=begin
+
+	Service Implementation Template
+
+
+	service_name - the name of the service
+	requests: -> 
+		service_name: - the name of the service
+		method: - camel case version of method name		
+		method_name: - api path
+		request_class: - request class
+		request_input: - request input class
+		request_output: - request output class
+
+	extra_data - extra data that can be requested from the service
+	searchable_columns - 
+	api_config - APIConfig class
+=end
+%>
+<%= header_for_file "#{service_name}.m" %>
+
+#import "<%= service_name %>.h"
+#import "<%= api_config %>.h"
+
+@implementation <%= service_name %> 
+
+<% requests.each do |request| %>
++ (<%= request[:request_class] %> *)<%= request[:method] %>:(<%= request[:request_input] %> *)input {	
+	<%= request[:request_class] %> *request = [<%= request[:request_class] %> request];
+
+	if ([input respondsToSelector:@selector(setApiKey:)]) {
+		input.apiKey = [<%= api_config %> shared].apiKey;
+	}
+
+	request.input = input;
+	request.serverBaseURL = [<%= api_config %> shared].serverBaseUrl;
+
+
+	return request;
+}
+
+<% end %>
+
+@end

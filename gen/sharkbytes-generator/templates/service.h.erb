@@ -1,0 +1,45 @@
+<%
+=begin
+
+	Service Interface Template
+
+
+	service_name - the name of the service
+	requests: -> 
+		service_name: - the name of the service
+		method: - camel case version of method name		
+		method_name: - api path
+		request_class: - request class
+		request_input: - request input class
+		request_output: - request output class
+		request_documentation: - documentation 
+		
+	extra_data - extra data that can be requested from the service
+	searchable_columns -
+		macro:
+		original:
+
+	api_config - APIConfig class
+=end
+%>
+<%= header_for_file "#{service_name}.h" %>
+
+
+#import <Foundation/Foundation.h>
+<% requests.each do |request| %>
+#import "<%= request[:request_class] %>.h"<% end %>
+
+<% if extra_data %>
+// Extra data that can be requested from services 						<% extra_data.each do |extra_data| %>
+#define k<%= objective_class_name extra_data %> @"<%= extra_data %>"	<% end %><% end %>
+<% if searchable_columns %>
+// Searchable columns 						<% searchable_columns.each do |column| %>
+#define <%= column[:macro] %> @"<%= column[:original] %>"			<% end %><% end %>
+@interface <%= service_name %> : NSObject
+
+<% requests.each do |request| %>
+<%= pretty_comment request[:request_documentation] %>
++ (<%= request[:request_class] %> *)<%= request[:method] %>:(<%= request[:request_input] %> *)input;
+<% end %>
+
+@end

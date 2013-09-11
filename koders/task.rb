@@ -115,7 +115,11 @@ copies the in folder in the processing folder
 - load templates
 - load json, csv, xml, css, etc. for processing and code generation
 
+- Trello API
+- gmail API
+
 * open - opens a file/url and returns a string
+* copy file
 * csv - opens a csv file and returns the serialized csv
 * json - opens a json file and return the contained object
 * xml - opens a file and return nokogiri document
@@ -124,12 +128,20 @@ copies the in folder in the processing folder
 # Processing
 works with processing folder
 
+- remove file
+- touch file
+- append file
+- render template
 - using ruby to generate code
 - using bash for processing
 - Objective-c Abstract Syntaxt Tree
 - 
 
-* key management
+- The "Stack Overflow" loop - interacting with other people
+- 
+
+
+* key management! - using the context like a boss :) 
 * runing a script
 * rake
 * objc AST - simple version based on templates
